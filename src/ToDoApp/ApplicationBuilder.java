@@ -11,11 +11,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class ApplicationBuilder extends Application {
-    private static ApplicationBuilder instance;
+    public static ApplicationBuilder instance;
+    // Finished by making the login screen work
+    // Got stuck on moving Screen classes to model package because of classLoader
+    // Will do main menu
+    private static final String FXML_Extension = ".fxml";
+    public AppManager appManager;
 
-    public static Stage primaryStage;
-    public static AppManager appManager;
-
+    private static Stage primaryStage;
     private static int screenWidth = 800;
     private static int screenHeight = 800;
 
@@ -23,30 +26,31 @@ public class ApplicationBuilder extends Application {
         launch(args);
     }
 
+    public void changeScene(String fileName) throws IOException {
+        var loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource( "view/" + fileName + FXML_Extension));
+        Parent root = loader.load();
+        primaryStage.setScene(new Scene(root, screenWidth, screenHeight));
+    }
+
     @Override
-    public void init(){
+    public void init() {
         var dataStorage = new DataStorageManager();
         appManager = dataStorage.importData("data.dat");
+        instance=this;
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        instance = this;
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Hello World");
         changeScene("LoginScreen");
         primaryStage.show();
-
     }
 
     @Override
     public void stop() throws IOException {
         var dataStorage = new DataStorageManager();
         dataStorage.exportData("data.dat", appManager);
-    }
-
-    public static void changeScene(String fxmlFileName) throws IOException {
-        Parent root = FXMLLoader.load(instance.getClass().getResource(fxmlFileName + ".fxml"));
-        primaryStage.setScene(new Scene(root, screenWidth, screenHeight));
     }
 }

@@ -32,9 +32,9 @@ public class RegisterController {
         var email = emailRegister.getText();
 
         try {
-            ApplicationBuilder.appManager.register(
+            ApplicationBuilder.instance.appManager.register(
                     new Person(firstName, lastName, phone, email, username, password));
-            ApplicationBuilder.changeScene("LoginScreen");
+            ApplicationBuilder.instance.changeScene("LoginScreen");
         } catch (DuplicateException e) {
             //Todo add warning window
             System.out.println("Username taken");

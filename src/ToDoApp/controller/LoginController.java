@@ -19,8 +19,8 @@ public class LoginController {
         var password = passwordLogin.getText();
 
         try {
-            ApplicationBuilder.appManager.login(username, password);
-            ApplicationBuilder.changeScene("MainScreen");
+            ApplicationBuilder.instance.appManager.login(username, password);
+            ApplicationBuilder.instance.changeScene("MainScreen");
         } catch (UnauthorisedException e) {
             //Todo add warning
             System.out.println("Username and password does not exist");
@@ -28,6 +28,6 @@ public class LoginController {
     }
 
     public void startRegistration() throws Exception {
-        ApplicationBuilder.changeScene("RegisterScreen");
+        ApplicationBuilder.instance.changeScene("RegisterScreen");
     }
 }
