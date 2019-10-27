@@ -40,7 +40,7 @@
                         <Insets />
                     </GridPane.margin>
                 </TextField>
-            <PasswordField fx:id="passwordLogin" maxWidth="250.0" style="-fx-background-color: #377;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <PasswordField fx:id="passwordLogin" maxWidth="250.0" onKeyPressed="#onKeyPressed" style="-fx-background-color: #377;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                 <Text fill="#aaaaaa" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" GridPane.rowIndex="1">
                     <font>
                         <Font name="Comic Sans MS" size="18.0" />
@@ -59,10 +59,9 @@
                 </Text>
                 <HBox alignment="BASELINE_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                     <children>
-                        <Button fx:id="buttonLogin" alignment="CENTER" mnemonicParsing="false" onAction="#login"
-                                text="Login">
+                        <Button fx:id="buttonLogin" alignment="CENTER" mnemonicParsing="false" onAction="#login" text="Login">
                             <HBox.margin>
-                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                             </HBox.margin>
                         </Button>
                         <Button fx:id="buttonStartRegistration" alignment="CENTER" mnemonicParsing="false" onAction="#startRegistration" text="Register">

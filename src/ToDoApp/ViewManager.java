@@ -21,7 +21,6 @@ public class ViewManager extends Application {
 
     private int screenWidth = 800;
     private int screenHeight = 600;
-    private FXMLLoader loader;
     private DataStorageManager dataStorage;
 
 
@@ -35,10 +34,10 @@ public class ViewManager extends Application {
 
     @Override
     public void init() {
-        instance = this;
-        loader = new FXMLLoader();
-        dataStorage = new DataStorageManager();
-        appManager = dataStorage.importData(DATA_FILE_NAME);
+        this.instance = this;
+
+        this.dataStorage = new DataStorageManager();
+        this.appManager = dataStorage.importData(DATA_FILE_NAME);
     }
 
     @Override
@@ -58,8 +57,8 @@ public class ViewManager extends Application {
 
     public Parent getComponent(String filePathRelativeToView) throws IOException {
         var name = "view/" + filePathRelativeToView + FXML_Extension;
-
-        loader.setLocation(instance.getClass().getResource(name));
+        var loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource(name));
 
         var component = (Parent) loader.load();
         return component;

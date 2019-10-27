@@ -6,8 +6,9 @@ import ToDoApp.model.AppManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
-import java.beans.EventHandler;
 import java.io.IOException;
 
 public class LoginController {
@@ -16,13 +17,7 @@ public class LoginController {
     @FXML
     private PasswordField passwordLogin;
 
-    public LoginController(AppManager appManager) {
-        this.appManager = appManager;
-    }
-
     private AppManager appManager;
-
-
 
     public void login() throws IOException {
         var username = usernameLogin.getText();
@@ -44,7 +39,9 @@ public class LoginController {
         viewManger.changeScene("RegisterScreen");
     }
 
-    public void onTextUpdate(EventHandler eventHandler) {
-        System.out.println("hi");
+    public void onKeyPressed(KeyEvent keyEvent) throws IOException {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            login();
+        }
     }
 }
