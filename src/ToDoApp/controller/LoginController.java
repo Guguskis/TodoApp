@@ -1,8 +1,6 @@
 package ToDoApp.controller;
 
-import ToDoApp.ViewManager;
 import ToDoApp.exceptions.UnauthorisedException;
-import ToDoApp.model.AppManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -11,21 +9,19 @@ import javafx.scene.input.KeyEvent;
 
 import java.io.IOException;
 
-public class LoginController {
+public class LoginController extends Controller {
+
     @FXML
     private TextField usernameLogin;
     @FXML
     private PasswordField passwordLogin;
-
-    private AppManager appManager;
 
     public void login() throws IOException {
         var username = usernameLogin.getText();
         var password = passwordLogin.getText();
 
         try {
-            var viewManager = ViewManager.getInstance();
-            viewManager.appManager.login(username, password);
+            appManager.login(username, password);
             viewManager.changeScene("MainScreen/MainScreen");
         } catch (UnauthorisedException e) {
             //Todo add warning
@@ -34,9 +30,7 @@ public class LoginController {
     }
 
     public void startRegistration() throws Exception {
-        var viewManger = ViewManager.getInstance();
-
-        viewManger.changeScene("RegisterScreen");
+        viewManager.changeScene("RegisterScreen");
     }
 
     public void onKeyPressed(KeyEvent keyEvent) throws IOException {

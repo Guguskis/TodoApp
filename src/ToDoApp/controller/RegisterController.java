@@ -1,6 +1,5 @@
 package ToDoApp.controller;
 
-import ToDoApp.ViewManager;
 import ToDoApp.exceptions.DuplicateException;
 import ToDoApp.model.Person;
 import javafx.fxml.FXML;
@@ -8,7 +7,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
-public class RegisterController {
+public class RegisterController extends Controller {
 
     @FXML
     private TextField usernameRegister;
@@ -23,18 +22,17 @@ public class RegisterController {
     @FXML
     private TextField emailRegister;
 
+
     public void register() throws IOException {
-        var username = usernameRegister.getText();
-        var password = passwordRegister.getText();
-        var firstName = firstNameRegister.getText();
-        var lastName = lastNameRegister.getText();
-        var phone = phoneRegister.getText();
-        var email = emailRegister.getText();
+
+        var personToRegister = new Person(
+                firstNameRegister.getText(), lastNameRegister.getText(),
+                phoneRegister.getText(), emailRegister.getText(),
+                usernameRegister.getText(), passwordRegister.getText()
+        );
 
         try {
-            var viewManager = ViewManager.getInstance();
-            viewManager.appManager.register(
-                    new Person(firstName, lastName, phone, email, username, password));
+            appManager.register(personToRegister);
             viewManager.changeScene("LoginScreen");
         } catch (DuplicateException e) {
             //Todo add warning window

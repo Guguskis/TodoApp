@@ -6,29 +6,27 @@ import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 
-public class MainContoller {
+public class MainContoller extends Controller {
     @FXML
     private BorderPane mainPane;
 
+    @FXML
     public void logout() throws IOException {
         var viewManager = ViewManager.getInstance();
-        // Use appManager singleton?
+        // Todo Use appManager singleton?
         viewManager.appManager.logout();
 
         viewManager.changeScene("LoginScreen");
     }
 
-    public void openProjects() throws IOException {
-        var viewManager = ViewManager.getInstance();
-        var displayProjectsComponent = viewManager.getComponent("MainScreen/ProjectsView");
 
+    public void openProjects() throws IOException {
+        var displayProjectsComponent = viewManager.getComponent("MainScreen/ProjectsContainer");
         mainPane.setCenter(displayProjectsComponent);
     }
 
-    public void openAccount() throws IOException {
-        var viewManager = ViewManager.getInstance();
-        var displayAccountComponent = viewManager.getComponent("MainScreen/AccountSettingsComponent");
-
+    public void openAccountSettings() throws IOException {
+        var displayAccountComponent = viewManager.getComponent("MainScreen/AccountSettingsContainer");
         mainPane.setCenter(displayAccountComponent);
     }
 }

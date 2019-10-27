@@ -60,8 +60,7 @@ public class ViewManager extends Application {
         var loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(name));
 
-        var component = (Parent) loader.load();
-        return component;
+        return (Parent) loader.load();
     }
 
     @Override
