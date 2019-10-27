@@ -59,6 +59,12 @@
                 </Text>
                 <HBox alignment="BASELINE_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                     <children>
+                        <Button fx:id="buttonLogin" alignment="CENTER" mnemonicParsing="false" onAction="#login"
+                                text="Login">
+                            <HBox.margin>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                            </HBox.margin>
+                        </Button>
                         <Button fx:id="buttonStartRegistration" alignment="CENTER" mnemonicParsing="false" onAction="#startRegistration" text="Register">
                             <HBox.margin>
                                 <Insets bottom="10.0" right="10.0" top="10.0" />
@@ -66,11 +72,6 @@
                             <font>
                                 <Font name="Comic Sans MS" size="12.0" />
                             </font>
-                        </Button>
-                        <Button fx:id="buttonLogin" alignment="CENTER" mnemonicParsing="false" onAction="#login" text="Login">
-                            <HBox.margin>
-                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                            </HBox.margin>
                         </Button>
                     </children>
                 </HBox>

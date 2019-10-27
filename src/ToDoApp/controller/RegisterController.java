@@ -1,6 +1,6 @@
 package ToDoApp.controller;
 
-import ToDoApp.ApplicationBuilder;
+import ToDoApp.ViewManager;
 import ToDoApp.exceptions.DuplicateException;
 import ToDoApp.model.Person;
 import javafx.fxml.FXML;
@@ -32,9 +32,10 @@ public class RegisterController {
         var email = emailRegister.getText();
 
         try {
-            ApplicationBuilder.instance.appManager.register(
+            var viewManager = ViewManager.getInstance();
+            viewManager.appManager.register(
                     new Person(firstName, lastName, phone, email, username, password));
-            ApplicationBuilder.instance.changeScene("LoginScreen");
+            viewManager.changeScene("LoginScreen");
         } catch (DuplicateException e) {
             //Todo add warning window
             System.out.println("Username taken");

@@ -1,11 +1,7 @@
 package ToDoApp.lab2;
 
-import ToDoApp.model.AppManager;
-import ToDoApp.model.DataStorageManager;
-import ToDoApp.model.UserInput;
 import ToDoApp.lab2.CommandLineInterface.CommandLineInterface;
-import ToDoApp.model.Person;
-import ToDoApp.model.Project;
+import ToDoApp.model.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,13 +9,14 @@ import java.util.Arrays;
 
 public class Main {
 
-    public static String dataFileName = "data.txt";
+    private static String dataFileName = "data.dat";
+    private static AppManager appManager;
+    private static UserInput userInput = new UserInput();
 
     public static void main(String[] args) {
         var CLI = new CommandLineInterface(new AppManager(), new UserInput());
         var dataStorageManager = new DataStorageManager();
-        var userInput = new UserInput();
-        AppManager appManager = importData(dataStorageManager);
+        appManager = importData(dataStorageManager);
 
         var inAuthenticationMenu = true;
         var authenticationMenu = new ArrayList<String>(Arrays.asList("Login", "Register", "Exit"));
@@ -31,14 +28,14 @@ public class Main {
                 case "Login":
                     var success = CLI.login();
                     if (success) {
-                        mainMenu(appManager, userInput, CLI, dataStorageManager);
+                        mainMenu(CLI, dataStorageManager);
                     } else {
                         inAuthenticationMenu = false;
                     }
                     break;
                 case "Register":
                     CLI.register();
-                    exportData(appManager, dataStorageManager);
+                    exportData(dataStorageManager);
                     break;
                 case "Exit":
                     inAuthenticationMenu = false;
@@ -47,7 +44,7 @@ public class Main {
         }
     }
 
-    public static void mainMenu(AppManager appManager, UserInput userInput, CommandLineInterface CLI, DataStorageManager dataStorageManager) {
+    public static void mainMenu(CommandLineInterface CLI, DataStorageManager dataStorageManager) {
         var inMainMenu = true;
 
         while (inMainMenu) {
@@ -67,7 +64,7 @@ public class Main {
                     CLI.createProject();
                     break;
                 case "Manage account":
-                    accountMenu(appManager, CLI, userInput);
+                    accountMenu(CLI);
                     break;
                 case "Manage projects":
                     Project selectedProject = CLI.selectProject(appManager.getProjects());
@@ -77,14 +74,14 @@ public class Main {
                     break;
                 case "Logout":
                     CLI.logout();
-                    exportData(appManager, dataStorageManager);
+                    exportData(dataStorageManager);
                     inMainMenu = false;
                     break;
             }
         }
     }
 
-    public static void accountMenu(AppManager appManager, CommandLineInterface CLI, UserInput userInput) {
+    public static void accountMenu(CommandLineInterface CLI) {
         var user = appManager.getCurrentUser();
 
         var inAccountMenu = true;
@@ -136,7 +133,7 @@ public class Main {
         }
     }
 
-    public static void exportData(AppManager appManager, DataStorageManager dataStorageManager) {
+    public static void exportData(DataStorageManager dataStorageManager) {
         try {
             dataStorageManager.exportData(dataFileName, appManager);
         } catch (IOException e) {
