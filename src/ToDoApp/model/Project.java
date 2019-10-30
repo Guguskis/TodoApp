@@ -37,8 +37,8 @@ public class Project implements Serializable {
     public List<User> getMembers() {
         return members;
     }
-
-    public void addMember(User whoIsAdding, User userToAdd) throws DuplicateException, Exception {
+	
+	public void addMember(User whoIsAdding, User userToAdd) throws Exception {
         if (members.contains(userToAdd)) {
             throw new DuplicateException("User " + userToAdd + " already exists.");
 
@@ -78,21 +78,21 @@ public class Project implements Serializable {
 
     @Override
     public String toString() {
-        String projectText = "Project \"" + name + "\" with owner " + owner.getUsername() + ".\nMembers:";
+	    StringBuilder projectText = new StringBuilder("Project \"" + name + "\" with owner " + owner.getUsername() + ".\nMembers:");
         for (var member : members) {
-            projectText += "\n\t" + member;
+	        projectText.append("\n\t").append(member);
         }
 
         if (tasks.isEmpty()) {
-            return projectText;
+	        return projectText.toString();
         }
-
-        projectText += "\nAnd is made out of these main tasks:";
+	
+	    projectText.append("\nAnd is made out of these main tasks:");
 
         for (var task : tasks) {
-            projectText += "\n\t" + task;
+	        projectText.append("\n\t").append(task);
         }
-        return projectText;
+	    return projectText.toString();
     }
 
     @Override
