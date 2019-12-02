@@ -35,7 +35,7 @@ public class LoginScreenController extends Controller {
         } catch (UnauthorisedException e) {
             //Todo add warning
             System.out.println("Username and password does not exist");
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

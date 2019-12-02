@@ -16,10 +16,20 @@ public class User implements Serializable {
     private boolean active;
     private List<Project> projects;
 
+    public User(int id, String username, String password, Boolean active) {
+//        id = totalUsers;
+        totalUsers++;
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.active = true;
+        this.projects = new ArrayList();
+    }
+
     public User(String username, String password) {
         id = totalUsers;
         totalUsers++;
-
+//        this.id = id;
         this.username = username;
         this.password = password;
         this.active = true;

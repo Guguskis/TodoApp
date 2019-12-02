@@ -13,7 +13,6 @@ public class App extends Application {
     private static final int SCREEN_WIDTH = 800;
     private static final int SCREEN_HEIGHT = 600;
     private static final String DATA_FILE_NAME = "data.dat";
-    private static final String FXML_Extension = ".fxml";
 
     private static App instance;
     public AppManager appManager;

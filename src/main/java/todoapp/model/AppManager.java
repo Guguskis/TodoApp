@@ -3,14 +3,17 @@ package main.java.todoapp.model;
 import main.java.todoapp.exceptions.DuplicateException;
 import main.java.todoapp.exceptions.NotFoundException;
 import main.java.todoapp.exceptions.UnauthorisedException;
+import main.java.todoapp.repository.ConnectionManager;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AppManager implements Serializable {
     private User currentUser = null;
     private List<User> users = new ArrayList();
+    private ConnectionManager connection = new ConnectionManager();
 
     public AppManager() {
     }
@@ -39,8 +42,10 @@ public class AppManager implements Serializable {
 
     }
 
-    public void login(String username, String password) throws UnauthorisedException {
-        for (var user : users) {
+    public void login(String username, String password) throws UnauthorisedException, SQLException, ClassNotFoundException {
+        var connectionResult = connection.findByUsername(username);
+
+        for (var user : connectionResult) {
             if (user.getUsername().toLowerCase().equals(username.toLowerCase()) && user.getPassword().equals(password)) {
                 currentUser = user;
                 return;
