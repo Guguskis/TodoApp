@@ -1,22 +1,22 @@
 package main.java.todoapp.controller;
 
 import javafx.fxml.Initializable;
-import main.java.todoapp.App;
+import main.java.todoapp.ViewManager;
 import main.java.todoapp.model.AppManager;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public abstract class Controller implements Initializable {
+	protected ViewManager viewManager;
 	protected AppManager appManager;
-	protected App viewManager;
 
 	protected abstract void start();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		this.viewManager = App.getInstance();
-		this.appManager = viewManager.appManager;
+		this.viewManager = ViewManager.getInstance();
+		this.appManager = viewManager.getAppManager();
 		start();
 	}
 }

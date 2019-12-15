@@ -8,13 +8,13 @@ import main.java.todoapp.model.AppManager;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 
-public class App extends Application implements Serializable {
+public class ViewManager extends Application implements Serializable {
+    private static ViewManager instance;
+
     private static final int SCREEN_WIDTH = 800;
     private static final int SCREEN_HEIGHT = 600;
-    private static final String DATA_FILE_NAME = "data.dat";
 
-    private static App instance;
-    public AppManager appManager;
+    private AppManager appManager;
     private Stage primaryStage;
     private ComponentLoader componentLoader;
 
@@ -22,13 +22,14 @@ public class App extends Application implements Serializable {
         launch(args);
     }
 
-    public static App getInstance() {
+    public static ViewManager getInstance() {
         return instance;
     }
 
     @Override
     public void init() {
         instance = this;
+        appManager = new AppManager();
         componentLoader = new ComponentLoader();
     }
 
@@ -55,4 +56,7 @@ public class App extends Application implements Serializable {
 
     }
 
+    public AppManager getAppManager() {
+        return appManager;
+    }
 }
