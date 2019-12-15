@@ -19,7 +19,7 @@ public class LoginScreenController extends Controller {
 
     @Override
     protected void start() {
-        System.out.println("LoginScreenController initialised");
+
     }
 
     public void login() {
