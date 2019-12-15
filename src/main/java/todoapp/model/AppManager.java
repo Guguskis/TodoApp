@@ -41,7 +41,7 @@ public class AppManager implements Serializable {
 
     }
 
-    public void login(String myUsername, String myPassword) throws ClassNotFoundException, LoginFailedException {
+    public void login(String myUsername, String myPassword) throws LoginFailedException {
         List<User> connectionResult = connection.findByUsername(myUsername);
 
         for (var user : connectionResult) {

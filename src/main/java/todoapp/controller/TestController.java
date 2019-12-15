@@ -14,7 +14,7 @@ public class TestController extends Controller {
     protected void start() {
         try {
             appManager.login("admin", "admin");
-        } catch (ClassNotFoundException | LoginFailedException e) {
+        } catch (LoginFailedException e) {
             e.printStackTrace();
         }
         var username = appManager.getCurrentUser().getUsername();

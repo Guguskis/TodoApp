@@ -25,10 +25,10 @@ public class LoginScreenController extends Controller {
         var username = usernameLogin.getText();
         var password = passwordLogin.getText();
 
-        handleLogin(username, password);
+        tryLogin(username, password);
     }
 
-    private void handleLogin(String username, String password) {
+    private void tryLogin(String username, String password) {
         try {
             appManager.login(username, password);
             viewManager.changeScene("MainScreen/MainScreen");
@@ -36,8 +36,6 @@ public class LoginScreenController extends Controller {
             // Todo implement warn dialog
             System.out.println(e.getMessage());
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

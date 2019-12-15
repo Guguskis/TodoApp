@@ -13,43 +13,58 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConnectionManager implements Serializable {
+    private String className = "com.mysql.cj.jdbc.Driver";
+    private String username = "root";
+    private String password = "";
+    private String url = "jdbc:mysql://localhost/myscheme";
 
     private Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet result;
+    private Statement statement;
 
-    private void connect() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        //Todo create table
-        connection = DriverManager.getConnection("jdbc:mysql://localhost/myscheme", "root", "");
+    private void connect() {
+        try {
+            Class.forName(className);
+            connection = DriverManager.getConnection(url, username, password);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.out.println("Unable to connect to database.");
+        }
     }
 
     private void disconnect() throws SQLException {
         connection.close();
     }
 
-    public List<User> findAll() throws SQLException, ClassNotFoundException {
-        connect();
-
+    public List<User> findAll() {
+        List<User> users = new ArrayList<>();
         String findAllQuery = "select * from 'user'";
 
-        Statement statement = connection.createStatement();
-        ResultSet result = statement.executeQuery(findAllQuery);
+        try {
+            connect();
+            statement = connection.createStatement();
+            result = statement.executeQuery(findAllQuery);
 
-        ArrayList<User> users = mapResultToUsers(result);
+            users = mapResultToUsers(result);
 
-        result.close();
-        statement.close();
-        disconnect();
+            result.close();
+            statement.close();
+            disconnect();
+        } catch (SQLException e) {
+            System.out.println("findAll SQL query is wrong.");
+        }
 
         return users;
     }
 
-    public List<User> findByUsername(String username) throws ClassNotFoundException {
+    public List<User> findByUsername(String username) {
         List<User> users = new ArrayList<>();
+        String query = "select * from user where username=?";
+
         try {
             connect();
-            String query = "select * from user where username=?";
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username);
             result = preparedStatement.executeQuery();
@@ -60,13 +75,14 @@ public class ConnectionManager implements Serializable {
             preparedStatement.close();
             disconnect();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("findByUsername SQL query is wrong.");
         }
+
         return users;
     }
 
-    private ArrayList<User> mapResultToUsers(ResultSet result) throws SQLException {
-        ArrayList<User> users = new ArrayList<>();
+    private List<User> mapResultToUsers(ResultSet result) throws SQLException {
+        List<User> users = new ArrayList<>();
         while (result.next()) {
             int id = result.getInt("id");
             String username = result.getString("username");
