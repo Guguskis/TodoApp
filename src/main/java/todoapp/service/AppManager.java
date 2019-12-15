@@ -1,8 +1,12 @@
-package main.java.todoapp.model;
+package main.java.todoapp.service;
 
 import main.java.todoapp.exceptions.DuplicateException;
 import main.java.todoapp.exceptions.LoginFailedException;
 import main.java.todoapp.exceptions.NotFoundException;
+import main.java.todoapp.model.Company;
+import main.java.todoapp.model.Person;
+import main.java.todoapp.model.Project;
+import main.java.todoapp.model.User;
 import main.java.todoapp.repository.ConnectionManager;
 
 import java.util.ArrayList;
@@ -51,12 +55,11 @@ public class AppManager {
     }
 
     private boolean userWasNotFound(Optional<User> user) {
-        return user.isEmpty();
+        return user.isEmpty() || !user.get().isActive();
     }
 
     private boolean isValidated(String myUsername, String myPassword, User user) {
-        return user.isActive()
-                && usernameMatch(myUsername, user.getUsername())
+        return usernameMatch(myUsername, user.getUsername())
                 && passwordMatch(myPassword, user.getPassword());
     }
 

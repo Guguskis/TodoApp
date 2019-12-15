@@ -3,7 +3,7 @@ package main.java.todoapp;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import main.java.todoapp.model.AppManager;
+import main.java.todoapp.service.AppManager;
 
 import java.io.FileNotFoundException;
 

@@ -11,20 +11,18 @@ public class User {
     private String username;
     private String password;
     private boolean active = true;
-    private List<Project> projects;
+    private List<Project> projects = new ArrayList<>();
 
     public User(int id, String username, String password, Boolean active) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.active = active;
-        this.projects = new ArrayList<>();
     }
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.projects = new ArrayList<>();
     }
 
     public int getId() {
@@ -47,7 +45,7 @@ public class User {
         this.password = password;
     }
 
-    boolean isActive() {
+    public boolean isActive() {
         return active;
     }
 

@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class ConnectionManager {
-    private String className = "com.mysql.cj.jdbc.Driver";
-    private String username = "root";
-    private String password = "";
-    private String url = "jdbc:mysql://localhost/myscheme";
+    private final String className = "com.mysql.cj.jdbc.Driver";
+    private final String url = "jdbc:mysql://localhost/myscheme";
+    private final String username = "root";
+    private final String password = "";
 
     private Connection connection;
     private PreparedStatement preparedStatement;

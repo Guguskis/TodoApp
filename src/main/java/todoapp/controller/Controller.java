@@ -2,7 +2,7 @@ package main.java.todoapp.controller;
 
 import javafx.fxml.Initializable;
 import main.java.todoapp.ViewManager;
-import main.java.todoapp.model.AppManager;
+import main.java.todoapp.service.AppManager;
 
 import java.net.URL;
 import java.util.ResourceBundle;
