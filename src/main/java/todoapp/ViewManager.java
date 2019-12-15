@@ -8,6 +8,7 @@ import main.java.todoapp.model.AppManager;
 import java.io.FileNotFoundException;
 
 public class ViewManager extends Application {
+
     private static ViewManager instance;
 
     private static final int SCREEN_WIDTH = 800;
