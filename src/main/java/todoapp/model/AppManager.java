@@ -5,12 +5,11 @@ import main.java.todoapp.exceptions.LoginFailedException;
 import main.java.todoapp.exceptions.NotFoundException;
 import main.java.todoapp.repository.ConnectionManager;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class AppManager implements Serializable {
+public class AppManager {
     private User currentUser = null;
     private List<User> users = new ArrayList<>();
     private ConnectionManager connection = new ConnectionManager();
@@ -109,11 +108,7 @@ public class AppManager implements Serializable {
     }
 
     public List<Project> getProjects() {
-        if (currentUser != null) {
-            return currentUser.getProjects();
-        } else {
-            return new ArrayList<>();
-        }
+        return currentUser.getProjects();
     }
 
     public Project getProject(String projectName) throws NotFoundException {
@@ -130,10 +125,6 @@ public class AppManager implements Serializable {
     }
 
     public void removeProject(Project projectToRemove) {
-        if (currentUser == null) {
-            return;
-        }
-
         if (!projectToRemove.isOwner(currentUser)) {
             return;
         }

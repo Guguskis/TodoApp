@@ -2,14 +2,13 @@ package main.java.todoapp.model;
 
 import main.java.todoapp.exceptions.DuplicateException;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Task implements Serializable {
+public class Task {
 
     private List<Task> tasks;
     private boolean completed;

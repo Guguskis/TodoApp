@@ -2,7 +2,6 @@ package main.java.todoapp.repository;
 
 import main.java.todoapp.model.User;
 
-import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ConnectionManager implements Serializable {
+public class ConnectionManager {
     private String className = "com.mysql.cj.jdbc.Driver";
     private String username = "root";
     private String password = "";

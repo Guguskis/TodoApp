@@ -2,38 +2,29 @@ package main.java.todoapp.model;
 
 import main.java.todoapp.exceptions.NotFoundException;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User implements Serializable {
-
-    static int totalUsers = 0;
+public class User {
 
     private int id;
     private String username;
     private String password;
-    private boolean active;
+    private boolean active = true;
     private List<Project> projects;
 
     public User(int id, String username, String password, Boolean active) {
-//        id = totalUsers;
-        totalUsers++;
         this.id = id;
         this.username = username;
         this.password = password;
-        this.active = true;
-        this.projects = new ArrayList();
+        this.active = active;
+        this.projects = new ArrayList<>();
     }
 
     public User(String username, String password) {
-        id = totalUsers;
-        totalUsers++;
-//        this.id = id;
         this.username = username;
         this.password = password;
-        this.active = true;
-        this.projects = new ArrayList();
+        this.projects = new ArrayList<>();
     }
 
     public int getId() {

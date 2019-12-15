@@ -2,12 +2,11 @@ package main.java.todoapp.model;
 
 import main.java.todoapp.exceptions.DuplicateException;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Project implements Serializable {
+public class Project {
 
     private String name;
     private User owner;

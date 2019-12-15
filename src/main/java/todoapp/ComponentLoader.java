@@ -5,9 +5,8 @@ import javafx.scene.Parent;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Serializable;
 
-public class ComponentLoader implements Serializable {
+public class ComponentLoader {
     private static final String FXML_Extension = ".fxml";
 
     public Parent getComponent(String relativeFilePath) throws FileNotFoundException {
@@ -20,8 +19,7 @@ public class ComponentLoader implements Serializable {
         try {
             return new FXMLLoader().load(getClass().getResource(filePath));
         } catch (IOException e) {
-            System.out.println("Component \"" + filePath + "\" path is wrong.");
-            throw new FileNotFoundException();
+            throw new FileNotFoundException("Component \"" + filePath + "\" path is wrong.");
         }
     }
 }

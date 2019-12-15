@@ -1,8 +1,6 @@
 package main.java.todoapp.model;
 
-import java.io.Serializable;
-
-public class Person extends User implements Serializable {
+public class Person extends User {
 
     private String firstName;
     private String lastName;

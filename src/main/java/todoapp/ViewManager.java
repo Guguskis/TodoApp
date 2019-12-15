@@ -6,9 +6,8 @@ import javafx.stage.Stage;
 import main.java.todoapp.model.AppManager;
 
 import java.io.FileNotFoundException;
-import java.io.Serializable;
 
-public class ViewManager extends Application implements Serializable {
+public class ViewManager extends Application {
     private static ViewManager instance;
 
     private static final int SCREEN_WIDTH = 800;

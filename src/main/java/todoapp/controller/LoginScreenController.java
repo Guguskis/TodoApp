@@ -33,7 +33,7 @@ public class LoginScreenController extends Controller {
         } catch (LoginFailedException e) {
             triggerAlert(e.getMessage());
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
