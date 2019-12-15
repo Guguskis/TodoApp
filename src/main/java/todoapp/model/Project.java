@@ -10,14 +10,11 @@ public class Project {
 
     private String name;
     private User owner;
-    private List<User> members;
-    private List<Task> tasks;
+    private List<User> members = new ArrayList<>();
+    private List<Task> tasks = new ArrayList<>();
 
     public Project(String name) {
         this.name = name;
-        this.owner = null;
-        this.members = new ArrayList();
-        this.tasks = new ArrayList();
     }
 
     public String getName() {

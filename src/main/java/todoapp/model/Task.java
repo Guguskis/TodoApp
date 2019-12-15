@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class Task {
 
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
     private boolean completed;
     private String name;
     private User createdBy;
@@ -19,7 +19,6 @@ public class Task {
     private LocalDateTime completedDate;
 
     public Task(String name, User creator) {
-        this.tasks = new ArrayList();
         this.completed = false;
         this.name = name;
         this.createdBy = creator;
