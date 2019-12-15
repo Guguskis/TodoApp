@@ -12,11 +12,8 @@ import java.util.Optional;
 
 public class AppManager implements Serializable {
     private User currentUser = null;
-    private List<User> users = new ArrayList();
+    private List<User> users = new ArrayList<>();
     private ConnectionManager connection = new ConnectionManager();
-
-    public AppManager() {
-    }
 
     public void register(Person person) throws DuplicateException {
         createUser(person);
@@ -55,7 +52,7 @@ public class AppManager implements Serializable {
     }
 
     private boolean userWasNotFound(Optional<User> user) {
-        return !user.isPresent();
+        return user.isEmpty();
     }
 
     private boolean isValidated(String myUsername, String myPassword, User user) {
@@ -100,44 +97,36 @@ public class AppManager implements Serializable {
 
     public User getUser(String username) throws NotFoundException {
         for (var user : users) {
-            if (user.getUsername().toLowerCase().equals(username.toLowerCase())) {
+            if (usernameMatch(username, user)) {
                 return user;
             }
         }
         throw new NotFoundException("User with username=" + username + " not found.");
     }
 
+    private boolean usernameMatch(String username, User user) {
+        return user.getUsername().equalsIgnoreCase(username);
+    }
+
     public List<Project> getProjects() {
         if (currentUser != null) {
             return currentUser.getProjects();
-
         } else {
-            return null;
+            return new ArrayList<>();
         }
     }
 
-    public Project getProject(String projectName) {
-        if (currentUser == null) {
-            return null;
-        }
+    public Project getProject(String projectName) throws NotFoundException {
+        return currentUser.getProject(projectName);
+    }
+
+    public void createProject(Project project) throws DuplicateException {
         try {
-            return currentUser.getProject(projectName);
-
-        } catch (NotFoundException e) {
-            return null;
-        }
-    }
-
-    public void createProject(Project project) throws Exception {
-        if (currentUser == null) {
-            return;
-        }
-
-        var existingProject = getProject(project.getName());
-        if (existingProject != null) {
+            getProject(project.getName());
             throw new DuplicateException("Project \"" + project.getName() + "\" already exists.");
+        } catch (NotFoundException e) {
+            currentUser.createProject(project);
         }
-        currentUser.createProject(project);
     }
 
     public void removeProject(Project projectToRemove) {
