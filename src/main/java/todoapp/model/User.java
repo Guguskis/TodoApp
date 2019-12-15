@@ -56,7 +56,7 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    boolean getActive() {
+    boolean isActive() {
         return active;
     }
 

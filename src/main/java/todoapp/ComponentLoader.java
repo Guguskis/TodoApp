@@ -5,8 +5,9 @@ import javafx.scene.Parent;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 
-public class ComponentLoader {
+public class ComponentLoader implements Serializable {
     private static final String FXML_Extension = ".fxml";
 
     public Parent getComponent(String relativeFilePath) throws FileNotFoundException {

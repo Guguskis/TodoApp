@@ -43,10 +43,10 @@ public class AppManager implements Serializable {
     }
 
     public void login(String username, String password) throws UnauthorisedException, SQLException, ClassNotFoundException {
-        var connectionResult = connection.findByUsername(username);
+        List<User> connectionResult = connection.findByUsername(username);
 
         for (var user : connectionResult) {
-            if (user.getUsername().toLowerCase().equals(username.toLowerCase()) && user.getPassword().equals(password)) {
+            if (user.getUsername().toLowerCase().equals(username.toLowerCase()) && user.getPassword().equals(password) && user.isActive()) {
                 currentUser = user;
                 return;
             }

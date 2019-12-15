@@ -8,8 +8,9 @@ import main.java.todoapp.model.DataStorageManager;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 
-public class App extends Application {
+public class App extends Application implements Serializable {
     private static final int SCREEN_WIDTH = 800;
     private static final int SCREEN_HEIGHT = 600;
     private static final String DATA_FILE_NAME = "data.dat";
@@ -55,8 +56,9 @@ public class App extends Application {
 
     @Override
     public void stop() throws IOException {
-        var dataStorage = new DataStorageManager();
+        DataStorageManager dataStorage = new DataStorageManager();
         dataStorage.exportData("data.dat", appManager);
+
     }
 
 }
