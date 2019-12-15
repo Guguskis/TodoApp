@@ -15,6 +15,8 @@ import java.util.List;
 public class ConnectionManager implements Serializable {
 
     private Connection connection;
+    private PreparedStatement preparedStatement;
+    private ResultSet result;
 
     private void connect() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -43,19 +45,23 @@ public class ConnectionManager implements Serializable {
         return users;
     }
 
-    public List<User> findByUsername(String username) throws SQLException, ClassNotFoundException {
-        connect();
+    public List<User> findByUsername(String username) throws ClassNotFoundException {
+        List<User> users = new ArrayList<>();
+        try {
+            connect();
+            String query = "select * from user where username=?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, username);
+            result = preparedStatement.executeQuery();
 
-        PreparedStatement ps = connection.prepareStatement("select * from user where username=?");
-        ps.setString(1, username);
-        ResultSet result = ps.executeQuery();
+            users = mapResultToUsers(result);
 
-        ArrayList<User> users = mapResultToUsers(result);
-
-        result.close();
-        ps.close();
-        disconnect();
-
+            result.close();
+            preparedStatement.close();
+            disconnect();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return users;
     }
 

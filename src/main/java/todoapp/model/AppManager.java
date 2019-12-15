@@ -1,12 +1,11 @@
 package main.java.todoapp.model;
 
 import main.java.todoapp.exceptions.DuplicateException;
+import main.java.todoapp.exceptions.LoginFailedException;
 import main.java.todoapp.exceptions.NotFoundException;
-import main.java.todoapp.exceptions.UnauthorisedException;
 import main.java.todoapp.repository.ConnectionManager;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,16 +41,30 @@ public class AppManager implements Serializable {
 
     }
 
-    public void login(String username, String password) throws UnauthorisedException, SQLException, ClassNotFoundException {
-        List<User> connectionResult = connection.findByUsername(username);
+    public void login(String myUsername, String myPassword) throws ClassNotFoundException, LoginFailedException {
+        List<User> connectionResult = connection.findByUsername(myUsername);
 
         for (var user : connectionResult) {
-            if (user.getUsername().toLowerCase().equals(username.toLowerCase()) && user.getPassword().equals(password) && user.isActive()) {
+            if (isValidated(myUsername, myPassword, user)) {
                 currentUser = user;
                 return;
             }
         }
-        throw new UnauthorisedException();
+        throw new LoginFailedException("Username does not exist or invalid password.");
+    }
+
+    private boolean isValidated(String myUsername, String myPassword, User user) {
+        return user.isActive()
+                && usernameMatch(myUsername, user.getUsername())
+                && passwordMatch(myPassword, user.getPassword());
+    }
+
+    private boolean passwordMatch(String myPassword, String otherPassword) {
+        return otherPassword.equals(myPassword);
+    }
+
+    private boolean usernameMatch(String myUsername, String otherUsername) {
+        return otherUsername.equalsIgnoreCase(myUsername);
     }
 
     public void logout() {

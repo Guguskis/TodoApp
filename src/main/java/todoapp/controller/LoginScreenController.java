@@ -5,7 +5,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import main.java.todoapp.exceptions.UnauthorisedException;
+import main.java.todoapp.exceptions.LoginFailedException;
 
 import java.io.FileNotFoundException;
 
@@ -32,10 +32,12 @@ public class LoginScreenController extends Controller {
         try {
             appManager.login(username, password);
             viewManager.changeScene("MainScreen/MainScreen");
-        } catch (UnauthorisedException e) {
-            //Todo add warning
-            System.out.println("Username and password does not exist");
-        } catch (Exception e) {
+        } catch (LoginFailedException e) {
+            // Todo implement warn dialog
+            System.out.println(e.getMessage());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
