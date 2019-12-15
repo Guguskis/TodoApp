@@ -32,7 +32,7 @@
         <effect>
             <Bloom/>
         </effect>
-        <Text fx:id="ProjectNameText" fill="#b8ffaf" onKeyTyped="#changeText" strokeType="OUTSIDE"
+        <Text fx:id="projectNameText" fill="#b8ffaf" onKeyTyped="#changeText" strokeType="OUTSIDE"
               strokeWidth="0.0" text="Text" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <font>
                 <Font name="System Bold" size="12.0"/>

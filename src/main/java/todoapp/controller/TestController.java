@@ -7,7 +7,7 @@ import main.java.todoapp.exceptions.LoginFailedException;
 
 public class TestController extends Controller {
     @FXML
-    private Text ProjectNameText;
+    private Text projectNameText;
 
 
     @Override
@@ -17,8 +17,8 @@ public class TestController extends Controller {
         } catch (LoginFailedException e) {
             e.printStackTrace();
         }
-        var username = appManager.getCurrentUser().getUsername();
-        ProjectNameText.setText(username);
+        String username = appManager.getCurrentUser().getUsername();
+        projectNameText.setText(username);
 
     }
 
