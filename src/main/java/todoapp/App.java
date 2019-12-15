@@ -4,10 +4,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import main.java.todoapp.model.AppManager;
-import main.java.todoapp.model.DataStorageManager;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.Serializable;
 
 public class App extends Application implements Serializable {
@@ -32,8 +30,6 @@ public class App extends Application implements Serializable {
     public void init() {
         instance = this;
         componentLoader = new ComponentLoader();
-        DataStorageManager dataStorage = new DataStorageManager();
-        this.appManager = dataStorage.importData(DATA_FILE_NAME);
     }
 
     @Override
@@ -55,9 +51,7 @@ public class App extends Application implements Serializable {
 
 
     @Override
-    public void stop() throws IOException {
-        DataStorageManager dataStorage = new DataStorageManager();
-        dataStorage.exportData("data.dat", appManager);
+    public void stop() {
 
     }
 
