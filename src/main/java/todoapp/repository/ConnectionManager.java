@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ConnectionManager implements Serializable {
     private String className = "com.mysql.cj.jdbc.Driver";
@@ -59,7 +60,7 @@ public class ConnectionManager implements Serializable {
         return users;
     }
 
-    public List<User> findByUsername(String username) {
+    public Optional<User> findByUsername(String username) {
         List<User> users = new ArrayList<>();
         String query = "select * from user where username=?";
 
@@ -78,7 +79,8 @@ public class ConnectionManager implements Serializable {
             System.out.println("findByUsername SQL query is wrong.");
         }
 
-        return users;
+        User user = users.size() == 1 ? users.get(0) : null;
+        return Optional.ofNullable(user);
     }
 
     private List<User> mapResultToUsers(ResultSet result) throws SQLException {

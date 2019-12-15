@@ -8,6 +8,7 @@ import main.java.todoapp.repository.ConnectionManager;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class AppManager implements Serializable {
     private User currentUser = null;
@@ -41,16 +42,20 @@ public class AppManager implements Serializable {
 
     }
 
-    public void login(String myUsername, String myPassword) throws LoginFailedException {
-        List<User> connectionResult = connection.findByUsername(myUsername);
+    public void login(String username, String password) throws LoginFailedException {
+        Optional<User> user = connection.findByUsername(username);
 
-        for (var user : connectionResult) {
-            if (isValidated(myUsername, myPassword, user)) {
-                currentUser = user;
-                return;
-            }
+        if (userWasNotFound(user)) {
+            throw new LoginFailedException("User does not exist.");
+        } else if (isValidated(username, password, user.get())) {
+            currentUser = user.get();
+        } else {
+            throw new LoginFailedException("Credentials are incorrect.");
         }
-        throw new LoginFailedException("Username does not exist or invalid password.");
+    }
+
+    private boolean userWasNotFound(Optional<User> user) {
+        return !user.isPresent();
     }
 
     private boolean isValidated(String myUsername, String myPassword, User user) {

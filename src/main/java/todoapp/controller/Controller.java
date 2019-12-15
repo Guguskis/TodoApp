@@ -8,16 +8,15 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public abstract class Controller implements Initializable {
-	AppManager appManager;
-	App viewManager;
-	
+	protected AppManager appManager;
+	protected App viewManager;
+
 	protected abstract void start();
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		this.viewManager = App.getInstance();
 		this.appManager = viewManager.appManager;
-		
 		start();
 	}
 }

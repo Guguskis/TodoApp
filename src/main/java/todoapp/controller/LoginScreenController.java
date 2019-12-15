@@ -13,9 +13,9 @@ import java.io.FileNotFoundException;
 public class LoginScreenController extends Controller {
 
     @FXML
-    private TextField usernameLogin;
+    private TextField usernameField;
     @FXML
-    private PasswordField passwordLogin;
+    private PasswordField passwordField;
 
     @Override
     protected void start() {
@@ -23,10 +23,7 @@ public class LoginScreenController extends Controller {
     }
 
     public void login() {
-        var username = usernameLogin.getText();
-        var password = passwordLogin.getText();
-
-        tryLogin(username, password);
+        tryLogin(usernameField.getText(), passwordField.getText());
     }
 
     private void tryLogin(String username, String password) {
@@ -53,7 +50,7 @@ public class LoginScreenController extends Controller {
 
     }
 
-    public void onKeyPressed(KeyEvent keyEvent) throws FileNotFoundException {
+    public void onKeyPressed(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER) {
             login();
         }

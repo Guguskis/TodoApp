@@ -14,7 +14,7 @@ public class MainScreenController extends Controller {
 	
 	
 	public MainScreenController() {
-		super();
+
 	}
 	
 	@FXML

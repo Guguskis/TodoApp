@@ -35,13 +35,13 @@
                 <RowConstraints maxHeight="50.0" minHeight="10.0" vgrow="SOMETIMES"/>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES"/>
             </rowConstraints>
-            <TextField fx:id="usernameLogin" maxWidth="250.0" style="-fx-background-color: #377;"
+            <TextField fx:id="usernameField" maxWidth="250.0" style="-fx-background-color: #377;"
                        GridPane.columnIndex="1" GridPane.rowIndex="1">
                 <GridPane.margin>
                     <Insets/>
                 </GridPane.margin>
             </TextField>
-            <PasswordField fx:id="passwordLogin" maxWidth="250.0" onKeyPressed="#onKeyPressed"
+            <PasswordField fx:id="passwordField" maxWidth="250.0" onKeyPressed="#onKeyPressed"
                            style="-fx-background-color: #377;" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
             <Text fill="#aaaaaa" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Username"
                   GridPane.rowIndex="1">
