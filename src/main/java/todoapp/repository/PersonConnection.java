@@ -27,14 +27,6 @@ public class PersonConnection {
             .version(HttpClient.Version.HTTP_2)
             .build();
 
-    public static void main(String[] args) throws Exception {
-
-        PersonConnection connection = new PersonConnection();
-        Company company = new Company("MatasTM", "555", "Matukuliszzz", "matas");
-        connection.register(company);
-        System.out.println("Success??");
-    }
-
     public boolean login(User user) throws IOException, InterruptedException {
         HttpRequest request = createPostRequest(getUserJson(user), "/verify");
         HttpResponse<String> response = send(request);
@@ -63,6 +55,14 @@ public class PersonConnection {
         return httpClient.send(request, BodyHandlers.ofString());
     }
 
+    private HttpRequest createPostRequest(JSONObject body, String endpoint) {
+        return newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
+                .uri(URI.create(BASE_URL + endpoint))
+                .header("Content-Type", "application/json")
+                .build();
+    }
+
     private JSONObject getUserJson(User user) {
         JSONObject userJson = new JSONObject();
         try {
@@ -72,14 +72,6 @@ public class PersonConnection {
             e.printStackTrace();
         }
         return userJson;
-    }
-
-    private HttpRequest createPostRequest(JSONObject body, String endpoint) {
-        return newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
-                .uri(URI.create(BASE_URL + endpoint))
-                .header("Content-Type", "application/json")
-                .build();
     }
 
     private JSONObject getPersonJson(Person person) {
