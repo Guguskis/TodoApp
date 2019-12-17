@@ -14,9 +14,21 @@ import java.util.List;
 import java.util.Optional;
 
 public class AppManager {
+    private static AppManager instance;
+
     private User currentUser = null;
     private List<User> users = new ArrayList<>();
     private ConnectionManager connection = new ConnectionManager();
+
+    private AppManager() {
+    }
+
+    public static AppManager getInstance() {
+        if (instance == null) {
+            instance = new AppManager();
+        }
+        return instance;
+    }
 
     public void register(Person person) throws DuplicateException {
         createUser(person);

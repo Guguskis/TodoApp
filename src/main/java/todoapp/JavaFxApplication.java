@@ -7,14 +7,13 @@ import main.java.todoapp.service.AppManager;
 
 import java.io.FileNotFoundException;
 
-public class ViewManager extends Application {
+public class JavaFxApplication extends Application {
 
-    private static ViewManager instance;
+    private static JavaFxApplication instance;
 
     private static final int SCREEN_WIDTH = 800;
     private static final int SCREEN_HEIGHT = 600;
 
-    private AppManager appManager;
     private Stage primaryStage;
     private ComponentLoader componentLoader;
 
@@ -22,14 +21,13 @@ public class ViewManager extends Application {
         launch(args);
     }
 
-    public static ViewManager getInstance() {
+    public static JavaFxApplication getInstance() {
         return instance;
     }
 
     @Override
     public void init() {
         instance = this;
-        appManager = new AppManager();
         componentLoader = new ComponentLoader();
     }
 
@@ -54,9 +52,5 @@ public class ViewManager extends Application {
     @Override
     public void stop() {
 
-    }
-
-    public AppManager getAppManager() {
-        return appManager;
     }
 }

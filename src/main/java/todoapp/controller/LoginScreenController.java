@@ -29,7 +29,7 @@ public class LoginScreenController extends Controller {
     private void tryLogin(String username, String password) {
         try {
             appManager.login(username, password);
-            viewManager.changeScene("MainScreen/MainScreen");
+            javaFxApplication.changeScene("MainScreen/MainScreen");
         } catch (LoginFailedException e) {
             triggerAlert(e.getMessage());
         } catch (FileNotFoundException e) {
@@ -46,7 +46,7 @@ public class LoginScreenController extends Controller {
     }
 
     public void startRegistration() throws FileNotFoundException {
-        viewManager.changeScene("RegistrationScreen");
+        javaFxApplication.changeScene("RegistrationScreen");
 
     }
 

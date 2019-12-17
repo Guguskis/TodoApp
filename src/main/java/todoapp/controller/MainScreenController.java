@@ -21,7 +21,7 @@ public class MainScreenController extends Controller {
 	public void logout() throws FileNotFoundException {
 		// Todo Use appManager singleton?
 		appManager.logout();
-		viewManager.changeScene("LoginScreen");
+		javaFxApplication.changeScene("LoginScreen");
 		
 	}
 	
