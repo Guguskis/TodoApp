@@ -6,11 +6,13 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import main.java.todoapp.exceptions.LoginFailedException;
+import main.java.todoapp.repository.UserConnection;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class LoginScreenController extends Controller {
+    private final UserConnection userConnection = new UserConnection();
 
     @FXML
     private TextField usernameField;
@@ -19,22 +21,32 @@ public class LoginScreenController extends Controller {
 
     @Override
     protected void start() {
-
     }
 
-    public void login() {
-        tryLogin(usernameField.getText(), passwordField.getText());
-    }
-
-    private void tryLogin(String username, String password) {
-        try {
-            appManager.login(username, password);
+    public void login() throws IOException, InterruptedException {
+        if (usernameOrPasswordEmpty()) {
+            triggerAlert("Username and password cannot be empty.");
+        } else if (successfullyVerified()) {
             javaFxApplication.changeScene("MainScreen/MainScreen");
-        } catch (LoginFailedException e) {
-            triggerAlert(e.getMessage());
-        } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
+        } else {
+            triggerAlert("Username and password are not correct.");
         }
+    }
+
+    private boolean usernameOrPasswordEmpty() {
+        return getUsername().isEmpty() || getPassword().isEmpty();
+    }
+
+    private boolean successfullyVerified() throws IOException, InterruptedException {
+        return userConnection.verify(getUsername(), getPassword());
+    }
+
+    private String getPassword() {
+        return passwordField.getText();
+    }
+
+    private String getUsername() {
+        return usernameField.getText();
     }
 
     private void triggerAlert(String message) {
@@ -50,7 +62,7 @@ public class LoginScreenController extends Controller {
 
     }
 
-    public void onKeyPressed(KeyEvent keyEvent) {
+    public void onKeyPressed(KeyEvent keyEvent) throws IOException, InterruptedException {
         if (keyEvent.getCode() == KeyCode.ENTER) {
             login();
         }

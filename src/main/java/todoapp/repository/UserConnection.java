@@ -27,8 +27,9 @@ public class UserConnection {
             .version(HttpClient.Version.HTTP_2)
             .build();
 
-    public boolean login(User user) throws IOException, InterruptedException {
-        HttpRequest request = createPostRequest(getUserJson(user), "/verify");
+    public boolean verify(String username, String password) throws IOException, InterruptedException {
+        JSONObject userJson = getUserJson(new User(username, password));
+        HttpRequest request = createPostRequest(userJson, "/verify");
         HttpResponse<String> response = send(request);
         return response.body().equals("true");
     }
