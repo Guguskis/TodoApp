@@ -58,7 +58,7 @@ public class LoginScreenController extends Controller {
     }
 
     public void startRegistration() throws FileNotFoundException {
-        javaFxApplication.changeScene("RegistrationScreen");
+        javaFxApplication.changeScene("registration/RegistrationScreen");
 
     }
 
