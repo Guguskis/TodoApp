@@ -7,8 +7,8 @@ import main.java.todoapp.model.Person;
 
 import java.io.FileNotFoundException;
 
-public class RegisterScreenController extends Controller {
-	
+public class RegistrationScreenController extends Controller {
+
 	@FXML
 	private TextField usernameRegister;
 	@FXML
