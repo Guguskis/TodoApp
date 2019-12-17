@@ -1,5 +1,6 @@
 package main.java.todoapp.repository;
 
+import main.java.todoapp.exceptions.RegistrationFailedException;
 import main.java.todoapp.model.Company;
 import main.java.todoapp.model.Person;
 import main.java.todoapp.model.User;
@@ -29,7 +30,9 @@ public class PersonConnection {
     public static void main(String[] args) throws Exception {
 
         PersonConnection obj = new PersonConnection();
-        boolean success = obj.login(new User("Matas", "admin"));
+        Person person = new Person("Matas", "Liutikas", "", "", "Matukulis", "matas");
+        obj.register(person);
+        System.out.println("Success??");
     }
 
     public boolean login(User user) throws IOException, InterruptedException, JSONException {
@@ -37,13 +40,13 @@ public class PersonConnection {
         userJson.put("username", user.getUsername());
         userJson.put("password", user.getPassword());
 
-        HttpRequest request = createJsonRequest(userJson, "/verify");
+        HttpRequest request = createPostRequest(userJson, "/verify");
         HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
 
         return response.body().equals("true");
     }
 
-    private HttpRequest createJsonRequest(JSONObject body, String endpoint) {
+    private HttpRequest createPostRequest(JSONObject body, String endpoint) {
         return newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
                 .uri(URI.create(BASE_URL + endpoint))
@@ -51,8 +54,21 @@ public class PersonConnection {
                 .build();
     }
 
-    public void register(Person person) {
+    public void register(Person person) throws JSONException, RegistrationFailedException, IOException, InterruptedException {
+        JSONObject personJson = new JSONObject();
+        personJson.put("firstName", person.getFirstName());
+        personJson.put("lastName", person.getLastName());
+        personJson.put("phone", person.getPhone());
+        personJson.put("email", person.getEmail());
+        personJson.put("username", person.getUsername());
+        personJson.put("password", person.getPassword());
 
+        HttpRequest request = createPostRequest(personJson, "/person");
+        HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
+
+        if (response.statusCode() != 201) {
+            throw new RegistrationFailedException(response.body());
+        }
     }
 
     public void register(Company company) {
