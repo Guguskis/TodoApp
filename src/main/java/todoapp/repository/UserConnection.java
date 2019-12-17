@@ -20,7 +20,7 @@ import static java.net.http.HttpResponse.BodyHandlers;
  * example
  * https://www.mkyong.com/java/how-to-send-http-request-getpost-in-java/
  * */
-public class PersonConnection {
+public class UserConnection {
     private final String BASE_URL = "http://localhost:8082/api/user/";
 
     private final HttpClient httpClient = HttpClient.newBuilder()
