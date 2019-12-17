@@ -3,3 +3,4 @@ out
 *.dat
 .git
 src/resources/
+/TodoApp.iml
