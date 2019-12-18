@@ -13,6 +13,9 @@ public class User {
     private boolean active = true;
     private List<Project> projects = new ArrayList<>();
 
+    public User() {
+    }
+
     public User(int id, String username, String password, Boolean active) {
         this.id = id;
         this.username = username;

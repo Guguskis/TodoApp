@@ -67,12 +67,12 @@
                         <Insets bottom="10.0"/>
                     </VBox.margin>
                 </PasswordField>
-                <TextField fx:id="firstName" maxWidth="250.0" style="-fx-background-color: #377;">
+                <TextField fx:id="name" maxWidth="250.0" style="-fx-background-color: #377;">
                     <VBox.margin>
                         <Insets bottom="10.0"/>
                     </VBox.margin>
                 </TextField>
-                <TextField fx:id="lastName" maxWidth="250.0" style="-fx-background-color: #377;">
+                <TextField fx:id="contactPersonPhone" maxWidth="250.0" style="-fx-background-color: #377;">
                     <VBox.margin>
                         <Insets bottom="10.0"/>
                     </VBox.margin>

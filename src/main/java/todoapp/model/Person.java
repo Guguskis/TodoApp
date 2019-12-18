@@ -15,6 +15,10 @@ public class Person extends User {
         this.email = email;
     }
 
+    public Person() {
+        super();
+    }
+
     @Override
     public String toString() {
         return "Person " + firstName + " " + lastName + ", phone: " + phone + ", email: " + email + ".";

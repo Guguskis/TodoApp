@@ -11,6 +11,10 @@ public class Company extends User {
         this.contactPersonPhone = contactPersonPhone;
     }
 
+    public Company() {
+
+    }
+
     @Override
     public String toString() {
         return "Company: \"" + name + "\", contact person: " + contactPersonPhone + ".";
