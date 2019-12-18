@@ -1,4 +1,4 @@
-package main.java.todoapp.controller;
+package main.java.todoapp.controller.registration;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +13,7 @@ import main.java.todoapp.exceptions.EmptyFieldException;
 import main.java.todoapp.exceptions.RegistrationFailedException;
 import main.java.todoapp.repository.UserConnection;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -46,7 +47,7 @@ public class RegistrationScreenController implements Initializable {
     private void registerPerson() throws IOException, RegistrationFailedException, InterruptedException {
         try {
             connection.register(personController.getPerson());
-            javaFxApplication.changeScene("LoginScreen");
+            goToLoginScreen();
         } catch (EmptyFieldException e) {
             triggerAlert("All fields are required.");
         }
@@ -55,7 +56,7 @@ public class RegistrationScreenController implements Initializable {
     private void registerCompany() throws IOException, InterruptedException, RegistrationFailedException {
         try {
             connection.register(companyController.getCompany());
-            javaFxApplication.changeScene("LoginScreen");
+            goToLoginScreen();
         } catch (EmptyFieldException e) {
             triggerAlert("All fields are required.");
         }
@@ -119,5 +120,13 @@ public class RegistrationScreenController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public void cancel() throws FileNotFoundException {
+        goToLoginScreen();
+    }
+
+    private void goToLoginScreen() throws FileNotFoundException {
+        javaFxApplication.changeScene("LoginScreen");
     }
 }

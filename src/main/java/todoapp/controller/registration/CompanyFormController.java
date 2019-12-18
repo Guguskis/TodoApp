@@ -1,4 +1,4 @@
-package main.java.todoapp.controller;
+package main.java.todoapp.controller.registration;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
