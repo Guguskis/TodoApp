@@ -11,7 +11,7 @@
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="main.java.todoapp.controller.registration.PersonFormController">
     <children>
-        <VBox prefHeight="200.0" prefWidth="100.0">
+        <VBox minWidth="140.0" prefHeight="200.0" prefWidth="100.0">
             <children>
                 <Text fill="#aaaaaa" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Username">
                     <font>
@@ -37,7 +37,7 @@
                         <Insets bottom="10.0"/>
                     </VBox.margin>
                 </Text>
-                <Text fill="#aaaaaa" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Last name">
+                <Text fill="#aaaaaa" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Last name  ">
                     <font>
                         <Font name="Comic Sans MS" size="18.0"/>
                     </font>

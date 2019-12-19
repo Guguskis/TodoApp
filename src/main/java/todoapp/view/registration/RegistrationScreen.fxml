@@ -14,12 +14,12 @@
           fx:controller="main.java.todoapp.controller.registration.RegistrationScreenController">
     <columnConstraints>
         <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="195.0" minWidth="10.0" prefWidth="172.0"/>
-        <ColumnConstraints halignment="CENTER" maxWidth="235.0" minWidth="10.0" prefWidth="235.0"/>
+        <ColumnConstraints halignment="RIGHT" maxWidth="235.0" minWidth="10.0" prefWidth="235.0"/>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.0" minWidth="10.0" prefWidth="170.0"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="129.0" minHeight="10.0" prefHeight="85.0" valignment="BOTTOM" vgrow="SOMETIMES"/>
-        <RowConstraints maxHeight="243.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES"/>
+        <RowConstraints vgrow="SOMETIMES" maxHeight="129.0" minHeight="10.0" prefHeight="85.0" valignment="BOTTOM"/>
+        <RowConstraints valignment="CENTER" maxHeight="243.0" minHeight="10.0" prefHeight="243.0" vgrow="SOMETIMES"/>
         <RowConstraints maxHeight="110.0" minHeight="10.0" prefHeight="49.0" valignment="TOP" vgrow="SOMETIMES"/>
     </rowConstraints>
     <children>
