@@ -10,17 +10,15 @@ public class User {
     private int id;
     private String username;
     private String password;
-    private boolean active = true;
     private List<Project> projects = new ArrayList<>();
 
     public User() {
     }
 
-    public User(int id, String username, String password, Boolean active) {
+    public User(int id, String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.active = active;
     }
 
     public User(String username, String password) {
@@ -30,6 +28,10 @@ public class User {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -46,14 +48,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
     }
 
     public List<Project> getProjects() {
@@ -84,7 +78,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + ", active=" + active + '}';
+        return "User{" + "id=" + id + ", username=" + username + ", password=" + password + '}';
     }
 
     @Override

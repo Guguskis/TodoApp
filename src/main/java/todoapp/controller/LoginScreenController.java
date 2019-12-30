@@ -1,18 +1,22 @@
 package main.java.todoapp.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import main.java.todoapp.repository.UserConnection;
+import main.java.todoapp.JavaFxApplication;
+import main.java.todoapp.communication.Session;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class LoginScreenController extends Controller {
-    private final UserConnection userConnection = new UserConnection();
+public class LoginScreenController implements Initializable {
+    private final Session session = Session.getInstance();
+    private final JavaFxApplication javaFxApplication = JavaFxApplication.getInstance();
 
     @FXML
     private TextField usernameField;
@@ -20,25 +24,32 @@ public class LoginScreenController extends Controller {
     private PasswordField passwordField;
 
     @Override
-    protected void start() {
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        usernameField.setText("admin");
+        passwordField.setText("admin");
     }
 
-    public void login() throws IOException, InterruptedException {
+
+    public void login() throws Throwable {
         if (usernameOrPasswordEmpty()) {
             triggerAlert("Username and password cannot be empty.");
         } else if (successfullyVerified()) {
-            javaFxApplication.changeScene("MainScreen/MainScreen");
+            goToMainScreen();
         } else {
             triggerAlert("Username and password are not correct.");
         }
+    }
+
+    private void goToMainScreen() throws FileNotFoundException {
+        javaFxApplication.changeScene("MainScreen/MainScreen");
     }
 
     private boolean usernameOrPasswordEmpty() {
         return getUsername().isEmpty() || getPassword().isEmpty();
     }
 
-    private boolean successfullyVerified() throws IOException, InterruptedException {
-        return userConnection.verify(getUsername(), getPassword());
+    private boolean successfullyVerified() throws Throwable {
+        return session.verify(getUsername(), getPassword());
     }
 
     private String getPassword() {
@@ -62,10 +73,9 @@ public class LoginScreenController extends Controller {
 
     }
 
-    public void onKeyPressed(KeyEvent keyEvent) throws IOException, InterruptedException {
+    public void onKeyPressed(KeyEvent keyEvent) throws Throwable {
         if (keyEvent.getCode() == KeyCode.ENTER) {
             login();
         }
     }
-
 }

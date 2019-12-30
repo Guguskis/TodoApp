@@ -7,7 +7,7 @@
 <BorderPane fx:id="mainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
             prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #333;"
             xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="main.java.todoapp.controller.MainScreenController">
+            fx:controller="main.java.todoapp.controller.mainscreen.MainScreenController">
     <left>
         <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
             <Button fx:id="projectsMenuButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"

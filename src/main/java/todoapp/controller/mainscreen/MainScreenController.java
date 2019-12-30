@@ -1,4 +1,4 @@
-package main.java.todoapp.controller;
+package main.java.todoapp.controller.mainscreen;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,8 +18,13 @@ public class MainScreenController implements Initializable {
     @FXML
     public Pane middlePane;
 
-    public MainScreenController() {
-
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            openProjects();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -30,18 +35,15 @@ public class MainScreenController implements Initializable {
 
 
     public void openProjects() throws FileNotFoundException {
-        Parent companyForm = loader.getComponent("registration/CompanyForm");
-        middlePane.getChildren().add(companyForm);
+        Parent projectContainer = loader.getComponent("mainscreen/ProjectContainer");
+        middlePane.getChildren().clear();
+        middlePane.getChildren().add(projectContainer);
     }
 
     public void openAccountSettings() throws FileNotFoundException {
-//			var displayAccountComponent = viewManager.getComponent("MainScreen/AccountSettingsContainer");
-//			mainBorderPane.setCenter(displayAccountComponent);
+        Parent accountSettingsContainer = loader.getComponent("mainscreen/AccountSettingsContainer");
+        middlePane.getChildren().clear();
+        middlePane.getChildren().add(accountSettingsContainer);
     }
 
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
 }

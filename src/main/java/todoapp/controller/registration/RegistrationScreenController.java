@@ -9,9 +9,10 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.Pane;
 import main.java.todoapp.ComponentLoader;
 import main.java.todoapp.JavaFxApplication;
+import main.java.todoapp.communication.Session;
 import main.java.todoapp.exceptions.EmptyFieldException;
+import main.java.todoapp.exceptions.InvalidTypeException;
 import main.java.todoapp.exceptions.RegistrationFailedException;
-import main.java.todoapp.repository.UserConnection;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,7 +23,7 @@ import java.util.ResourceBundle;
 
 public class RegistrationScreenController implements Initializable {
     private final ComponentLoader loader = new ComponentLoader();
-    private final UserConnection connection = new UserConnection();
+    private final Session session = Session.getInstance();
     private final JavaFxApplication javaFxApplication = JavaFxApplication.getInstance();
 
     private PersonFormController personController;
@@ -46,19 +47,19 @@ public class RegistrationScreenController implements Initializable {
 
     private void registerPerson() throws IOException, RegistrationFailedException, InterruptedException {
         try {
-            connection.register(personController.getPerson());
+            session.register(personController.getPerson());
             goToLoginScreen();
-        } catch (EmptyFieldException e) {
-            triggerAlert("All fields are required.");
+        } catch (EmptyFieldException | InvalidTypeException e) {
+            triggerAlert(e.getMessage());
         }
     }
 
     private void registerCompany() throws IOException, InterruptedException, RegistrationFailedException {
         try {
-            connection.register(companyController.getCompany());
+            session.register(companyController.getCompany());
             goToLoginScreen();
-        } catch (EmptyFieldException e) {
-            triggerAlert("All fields are required.");
+        } catch (EmptyFieldException | InvalidTypeException e) {
+            triggerAlert(e.getMessage());
         }
     }
 

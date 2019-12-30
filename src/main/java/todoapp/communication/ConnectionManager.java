@@ -1,4 +1,4 @@
-package main.java.todoapp.repository;
+package main.java.todoapp.communication;
 
 import main.java.todoapp.model.TempTask;
 import main.java.todoapp.model.User;
@@ -204,7 +204,7 @@ public class ConnectionManager {
             String password = result.getString("password");
             Boolean active = result.getBoolean("active");
 
-            users.add(new User(id, username, password, active));
+            users.add(new User(id, username, password));
         }
         return users;
     }

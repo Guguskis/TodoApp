@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import main.java.todoapp.exceptions.EmptyFieldException;
+import main.java.todoapp.exceptions.InvalidTypeException;
 import main.java.todoapp.model.Company;
 
 import java.net.URL;
@@ -25,9 +26,11 @@ public class CompanyFormController implements Initializable {
 
     }
 
-    public Company getCompany() throws EmptyFieldException {
+    public Company getCompany() throws EmptyFieldException, InvalidTypeException {
         if (anyOfFieldsEmpty()) {
-            throw new EmptyFieldException();
+            throw new EmptyFieldException("All fields are required.");
+        } else if (phoneContainsOtherSymbols()) {
+            throw new InvalidTypeException("Phone should contain only digits.");
         } else {
             return createCompany();
         }
@@ -44,5 +47,22 @@ public class CompanyFormController implements Initializable {
 
     private boolean anyOfFieldsEmpty() {
         return username.getText().isEmpty() || password.getText().isEmpty() || name.getText().isEmpty() || contactPersonPhone.getText().isEmpty();
+    }
+
+    public void setCompany(Company company) {
+        username.setText(company.getUsername());
+        password.setText(company.getPassword());
+        name.setText(company.getName());
+        contactPersonPhone.setText(company.getContactPersonPhone());
+    }
+
+    private boolean phoneContainsOtherSymbols() {
+        try {
+            Long.parseLong(contactPersonPhone.getText());
+        } catch (NumberFormatException e) {
+            return true;
+        }
+
+        return false;
     }
 }

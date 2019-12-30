@@ -1,5 +1,6 @@
-package main.java.todoapp.repository;
+package main.java.todoapp.communication;
 
+import main.java.todoapp.exceptions.HttpRequestFailedException;
 import main.java.todoapp.exceptions.RegistrationFailedException;
 import main.java.todoapp.model.Company;
 import main.java.todoapp.model.Person;
@@ -22,6 +23,7 @@ import static java.net.http.HttpResponse.BodyHandlers;
  * */
 public class UserConnection {
     private final String BASE_URL = "http://localhost:8082/api/user/";
+
 
     private final HttpClient httpClient = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_2)
@@ -52,6 +54,93 @@ public class UserConnection {
         }
     }
 
+    public User getUserInfo(String username) throws Throwable {
+        HttpRequest request = createGetRequest("/" + username);
+        HttpResponse<String> response = send(request);
+
+        if (response.statusCode() != 200) {
+            throw new HttpRequestFailedException("Failed to get user info");
+        }
+
+        return getUser(response.body());
+    }
+
+    public void updateUserInformation(User user) throws IOException, InterruptedException, HttpRequestFailedException {
+        JSONObject json;
+        String endpoint;
+        if (user instanceof Person) {
+            json = getPersonJson((Person) user);
+            endpoint = "person";
+        } else {
+            json = getCompanyJson((Company) user);
+            endpoint = "company";
+        }
+
+        HttpRequest request = createPutRequest(json, endpoint);
+        HttpResponse<String> response = send(request);
+
+        if (response.statusCode() != 200) {
+            throw new HttpRequestFailedException("Failed to update user information.");
+        }
+    }
+
+    private HttpRequest createPutRequest(JSONObject body, String endpoint) {
+        return newBuilder()
+                .PUT(HttpRequest.BodyPublishers.ofString(body.toString()))
+                .uri(URI.create(BASE_URL + endpoint))
+                .header("Content-Type", "application/json")
+                .build();
+    }
+
+    private User getUser(String responseBody) throws Exception {
+        JSONObject json = new JSONObject(responseBody);
+        if (isCompany(json)) {
+            return getCompany(json);
+        } else if (isPerson(json)) {
+            return getPerson(json);
+        } else {
+            throw new Exception("Server and client types do not match.");
+        }
+    }
+
+    private Person getPerson(JSONObject json) throws JSONException {
+        Person person = new Person();
+        person.setId(json.getInt("id"));
+        person.setUsername(json.getString("username"));
+        person.setPassword(json.getString("password"));
+        person.setFirstName(json.getString("firstName"));
+        person.setLastName(json.getString("lastName"));
+        person.setPhone(json.getString("phone"));
+        person.setEmail(json.getString("email"));
+        return person;
+    }
+
+    private Company getCompany(JSONObject json) throws JSONException {
+        Company company = new Company();
+        company.setId(json.getInt("id"));
+        company.setUsername(json.getString("username"));
+        company.setPassword(json.getString("password"));
+        company.setName(json.getString("name"));
+        company.setContactPersonPhone(json.getString("contactPersonPhone"));
+        return company;
+    }
+
+    private boolean isPerson(JSONObject json) {
+        return json.has("firstName") && json.has("lastName") && json.has("phone") && json.has("email");
+    }
+
+    private boolean isCompany(JSONObject json) {
+        return json.has("name") && json.has("contactPersonPhone");
+    }
+
+    private HttpRequest createGetRequest(String endpoint) {
+        return newBuilder()
+                .GET()
+                .uri(URI.create(BASE_URL + endpoint))
+                .header("Content-Type", "application/json")
+                .build();
+    }
+
     private HttpResponse<String> send(HttpRequest request) throws IOException, InterruptedException {
         return httpClient.send(request, BodyHandlers.ofString());
     }
@@ -78,6 +167,7 @@ public class UserConnection {
     private JSONObject getPersonJson(Person person) {
         JSONObject personJson = new JSONObject();
         try {
+            personJson.put("id", person.getId());
             personJson.put("firstName", person.getFirstName());
             personJson.put("lastName", person.getLastName());
             personJson.put("phone", person.getPhone());
@@ -94,6 +184,7 @@ public class UserConnection {
         JSONObject companyJson = null;
         try {
             companyJson = new JSONObject();
+            companyJson.put("id", company.getId());
             companyJson.put("name", company.getName());
             companyJson.put("contactPersonPhone", company.getContactPersonPhone());
             companyJson.put("username", company.getUsername());

@@ -71,37 +71,37 @@
         </VBox>
         <VBox style="-fx-background-color: #333;">
             <children>
-                <TextField fx:id="username" maxWidth="250.0" nodeOrientation="RIGHT_TO_LEFT"
+                <TextField fx:id="username" maxWidth="250.0" nodeOrientation="LEFT_TO_RIGHT"
                            style="-fx-background-color: #377;">
                     <VBox.margin>
                         <Insets bottom="10.0"/>
                     </VBox.margin>
                 </TextField>
                 <PasswordField fx:id="password" accessibleRole="TEXT_FIELD" maxWidth="250.0"
-                               nodeOrientation="RIGHT_TO_LEFT" style="-fx-background-color: #377;">
+                               nodeOrientation="LEFT_TO_RIGHT" style="-fx-background-color: #377;">
                     <VBox.margin>
                         <Insets bottom="10.0"/>
                     </VBox.margin>
                 </PasswordField>
-                <TextField fx:id="firstName" maxWidth="250.0" nodeOrientation="RIGHT_TO_LEFT"
+                <TextField fx:id="firstName" maxWidth="250.0" nodeOrientation="LEFT_TO_RIGHT"
                            style="-fx-background-color: #377;">
                     <VBox.margin>
                         <Insets bottom="10.0"/>
                     </VBox.margin>
                 </TextField>
-                <TextField fx:id="lastName" maxWidth="250.0" nodeOrientation="RIGHT_TO_LEFT"
+                <TextField fx:id="lastName" maxWidth="250.0" nodeOrientation="LEFT_TO_RIGHT"
                            style="-fx-background-color: #377;">
                     <VBox.margin>
                         <Insets bottom="10.0"/>
                     </VBox.margin>
                 </TextField>
-                <TextField fx:id="phone" maxWidth="250.0" nodeOrientation="RIGHT_TO_LEFT"
+                <TextField fx:id="phone" maxWidth="250.0" nodeOrientation="LEFT_TO_RIGHT"
                            style="-fx-background-color: #377;">
                     <VBox.margin>
                         <Insets bottom="10.0"/>
                     </VBox.margin>
                 </TextField>
-                <TextField fx:id="email" maxWidth="250.0" nodeOrientation="RIGHT_TO_LEFT"
+                <TextField fx:id="email" maxWidth="250.0" nodeOrientation="LEFT_TO_RIGHT"
                            style="-fx-background-color: #377;">
                     <VBox.margin>
                         <Insets bottom="10.0"/>
