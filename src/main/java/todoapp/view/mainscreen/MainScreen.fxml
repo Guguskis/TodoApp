@@ -4,9 +4,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:id="mainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity"
-            minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0"
-            style="-fx-background-color: #333;" xmlns="http://javafx.com/javafx/8.0.999-ea"
+<BorderPane fx:id="mainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #333;"
+            xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="main.java.todoapp.controller.MainScreenController">
     <left>
         <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
@@ -18,11 +18,11 @@
     </left>
     <right>
         <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-            <Button fx:id="logoutButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
-                    onAction="#logout" text="Logout"/>
+            <Button fx:id="logoutButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#logout"
+                    text="Logout"/>
         </VBox>
     </right>
     <center>
-        <Pane fx:id="middleContainer" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+        <Pane fx:id="middlePane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
     </center>
 </BorderPane>

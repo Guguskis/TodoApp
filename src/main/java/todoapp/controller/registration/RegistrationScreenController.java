@@ -93,9 +93,9 @@ public class RegistrationScreenController implements Initializable {
     }
 
     private Parent getCompanyForm() throws IOException {
-        FXMLLoader personFormLoader = loader.getLoaderForComponent("registration/CompanyForm");
-        Parent companyForm = personFormLoader.load();
-        companyController = personFormLoader.getController();
+        FXMLLoader companyFormLoader = loader.getLoaderForComponent("registration/CompanyForm");
+        Parent companyForm = companyFormLoader.load();
+        companyController = companyFormLoader.getController();
         return companyForm;
     }
 
