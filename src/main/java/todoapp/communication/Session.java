@@ -1,16 +1,20 @@
 package main.java.todoapp.communication;
 
+import main.java.todoapp.dto.SimplifiedProjectDto;
 import main.java.todoapp.exceptions.HttpRequestFailedException;
 import main.java.todoapp.exceptions.RegistrationFailedException;
 import main.java.todoapp.model.Company;
 import main.java.todoapp.model.Person;
 import main.java.todoapp.model.User;
+import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Session {
     private static Session instance;
     private final UserConnection userConnection = new UserConnection();
+    private final ProjectConnection projectConnection = new ProjectConnection();
 
     private User currentUser;
 
@@ -46,5 +50,9 @@ public class Session {
 
         userConnection.updateUserInformation(user);
         currentUser = user;
+    }
+
+    public List<SimplifiedProjectDto> getProjects() throws InterruptedException, JSONException, HttpRequestFailedException, IOException {
+        return projectConnection.getProjects(currentUser.getUsername());
     }
 }

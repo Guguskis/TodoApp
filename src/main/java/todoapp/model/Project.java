@@ -8,17 +8,34 @@ import java.util.stream.Collectors;
 
 public class Project {
 
+    private long id;
     private String name;
     private User owner;
     private List<User> members = new ArrayList<>();
     private List<Task> tasks = new ArrayList<>();
 
+    public Project() {
+
+    }
+
     public Project(String name) {
         this.name = name;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public User getOwner() {

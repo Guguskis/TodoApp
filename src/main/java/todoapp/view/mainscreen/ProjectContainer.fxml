@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<TableView fx:id="tableView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+<TableView fx:id="table" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
            prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #333;"
            xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="main.java.todoapp.controller.mainscreen.ProjectContainerController">
-    <columns>
-        <TableColumn prefWidth="75.0" text="Name"/>
-        <TableColumn prefWidth="75.0" text="Owner"/>
-        <TableColumn prefWidth="75.0" text="Members"/>
-    </columns>
-</TableView>
+           fx:controller="main.java.todoapp.controller.mainscreen.ProjectContainerController"/>

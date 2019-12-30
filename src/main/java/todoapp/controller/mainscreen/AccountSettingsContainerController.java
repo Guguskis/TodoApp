@@ -7,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.HBox;
 import main.java.todoapp.ComponentLoader;
-import main.java.todoapp.JavaFxApplication;
 import main.java.todoapp.communication.Session;
 import main.java.todoapp.controller.registration.CompanyFormController;
 import main.java.todoapp.controller.registration.PersonFormController;
@@ -25,8 +24,6 @@ import java.util.ResourceBundle;
 public class AccountSettingsContainerController implements Initializable {
     private final ComponentLoader loader = new ComponentLoader();
     private final Session session = Session.getInstance();
-    private final JavaFxApplication javaFxApplication = JavaFxApplication.getInstance();
-
 
     private PersonFormController personController;
     private CompanyFormController companyController;

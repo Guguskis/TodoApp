@@ -23,8 +23,6 @@ import static java.net.http.HttpResponse.BodyHandlers;
  * */
 public class UserConnection {
     private final String BASE_URL = "http://localhost:8082/api/user/";
-
-
     private final HttpClient httpClient = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_2)
             .build();
@@ -55,7 +53,7 @@ public class UserConnection {
     }
 
     public User getUserInfo(String username) throws Throwable {
-        HttpRequest request = createGetRequest("/" + username);
+        HttpRequest request = createGetRequest(username);
         HttpResponse<String> response = send(request);
 
         if (response.statusCode() != 200) {
