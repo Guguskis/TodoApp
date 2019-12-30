@@ -36,9 +36,9 @@ public class ProjectContainerController implements Initializable {
         addColumn("Members", "memberCount", 50);
     }
 
-    private void addColumn(String columnName, String propertyName, int minWitdh) {
+    private void addColumn(String columnName, String propertyName, int minWidth) {
         TableColumn<String, SimplifiedProjectDto> column = new TableColumn<>(columnName);
-        column.setMinWidth(minWitdh);
+        column.setMinWidth(minWidth);
         column.setCellValueFactory(new PropertyValueFactory<>(propertyName));
         table.getColumns().add(column);
     }
