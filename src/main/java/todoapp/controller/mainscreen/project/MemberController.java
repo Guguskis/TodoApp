@@ -40,7 +40,7 @@ public class MemberController implements Initializable {
 
     public String getUsername() throws EmptyFieldException {
         if (username.getText().isEmpty()) {
-            throw new EmptyFieldException("Username cannot bet empty");
+            throw new EmptyFieldException("Member username cannot bet empty.");
         }
         return username.getText();
     }

@@ -55,4 +55,8 @@ public class Session {
     public List<SimplifiedProjectDto> getProjects() throws InterruptedException, JSONException, HttpRequestFailedException, IOException {
         return projectConnection.getProjects(currentUser.getUsername());
     }
+
+    public void createProject(List<String> usernames, String name) throws InterruptedException, IOException, JSONException {
+        projectConnection.create(currentUser.getUsername(), usernames, name);
+    }
 }

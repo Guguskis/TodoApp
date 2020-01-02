@@ -50,7 +50,7 @@ public class JavaFxApplication extends Application {
         primaryWindow.setScene(sceneComponent);
     }
 
-    public void createWindow(Parent root, String title) {
+    public Stage createWindow(Parent root, String title) {
         HBox background = new HBox();
         background.setAlignment(Pos.CENTER);
         background.setStyle("-fx-background-color: #333;");
@@ -66,6 +66,7 @@ public class JavaFxApplication extends Application {
         window.setY(primaryWindow.getY());
 
         window.show();
+        return window;
     }
 
 

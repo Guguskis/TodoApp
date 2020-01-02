@@ -3,11 +3,13 @@ package main.java.todoapp.controller.mainscreen.project;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import main.java.todoapp.ComponentLoader;
 import main.java.todoapp.JavaFxApplication;
 import main.java.todoapp.communication.Session;
@@ -15,7 +17,6 @@ import main.java.todoapp.dto.SimplifiedProjectDto;
 import main.java.todoapp.exceptions.HttpRequestFailedException;
 import org.json.JSONException;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -68,8 +69,11 @@ public class ProjectContainerController implements Initializable {
         }
     }
 
-    public void addProject() throws FileNotFoundException {
-        Parent projectForm = loader.getComponent("mainscreen/project/ProjectForm");
-        javaFxApplication.createWindow(projectForm, "Add project");
+    public void addProject() throws IOException {
+        FXMLLoader projectFormLoader = loader.getLoaderForComponent("mainscreen/project/ProjectForm");
+        Parent projectForm = projectFormLoader.load();
+        ProjectFormController controller = projectFormLoader.getController();
+        Stage window = javaFxApplication.createWindow(projectForm, "Add project");
+        controller.setWindow(window);
     }
 }

@@ -29,7 +29,7 @@ public class UserConnection {
 
     public boolean verify(String username, String password) throws IOException, InterruptedException {
         JSONObject userJson = getUserJson(new User(username, password));
-        HttpRequest request = createPostRequest(userJson, "/verify");
+        HttpRequest request = createPostRequest(userJson, "verify");
         HttpResponse<String> response = send(request);
         return response.body().equals("true");
     }
