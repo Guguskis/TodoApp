@@ -75,7 +75,7 @@ public class Project {
     }
 
     public void addTask(Task task) throws DuplicateException {
-        var duplicate = tasks.stream()
+        List<Task> duplicate = tasks.stream()
                 .filter(t -> t.getName().equals(task.getName()))
                 .collect(Collectors.toList());
         if (!duplicate.isEmpty()) {
@@ -92,8 +92,8 @@ public class Project {
     @Override
     public String toString() {
 	    StringBuilder projectText = new StringBuilder("Project \"" + name + "\" with owner " + owner.getUsername() + ".\nMembers:");
-        for (var member : members) {
-	        projectText.append("\n\t").append(member);
+        for (User member : members) {
+            projectText.append("\n\t").append(member);
         }
 
         if (tasks.isEmpty()) {
@@ -102,8 +102,8 @@ public class Project {
 	
 	    projectText.append("\nAnd is made out of these main tasks:");
 
-        for (var task : tasks) {
-	        projectText.append("\n\t").append(task);
+        for (Task task : tasks) {
+            projectText.append("\n\t").append(task);
         }
 	    return projectText.toString();
     }

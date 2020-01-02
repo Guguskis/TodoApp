@@ -1,24 +1,30 @@
-package main.java.todoapp.controller.mainscreen;
+package main.java.todoapp.controller.mainscreen.project;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import main.java.todoapp.ComponentLoader;
+import main.java.todoapp.JavaFxApplication;
 import main.java.todoapp.communication.Session;
 import main.java.todoapp.dto.SimplifiedProjectDto;
 import main.java.todoapp.exceptions.HttpRequestFailedException;
 import org.json.JSONException;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class ProjectContainerController implements Initializable {
+    private final ComponentLoader loader = new ComponentLoader();
     private final Session session = Session.getInstance();
+    private final JavaFxApplication javaFxApplication = JavaFxApplication.getInstance();
 
     @FXML
     public TableView table;
@@ -60,5 +66,10 @@ public class ProjectContainerController implements Initializable {
         } catch (HttpRequestFailedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addProject() throws FileNotFoundException {
+        Parent projectForm = loader.getComponent("mainscreen/project/ProjectForm");
+        javaFxApplication.createWindow(projectForm, "Add project");
     }
 }

@@ -48,7 +48,7 @@ public class Task {
     }
 
     public void addTask(User creator, Task task) throws DuplicateException {
-        var duplicates = tasks.stream()
+        List<Task> duplicates = tasks.stream()
                 .filter(t -> t.getName().equals(task.getName()))
                 .collect(Collectors.toList());
 
@@ -64,13 +64,13 @@ public class Task {
         if (!completed) {
             return "not completed";
         }
-        var secondsPassed = ChronoUnit.SECONDS.between(completedDate, LocalDateTime.now());
-        var minutesPassed = ChronoUnit.MINUTES.between(completedDate, LocalDateTime.now());
-        var hoursPassed = ChronoUnit.HOURS.between(completedDate, LocalDateTime.now());
-        var daysPassed = ChronoUnit.DAYS.between(completedDate, LocalDateTime.now());
-        var weeksPassed = ChronoUnit.WEEKS.between(completedDate, LocalDateTime.now());
-        var monthsPassed = ChronoUnit.MONTHS.between(completedDate, LocalDateTime.now());
-        var yearsPassed = ChronoUnit.YEARS.between(completedDate, LocalDateTime.now());
+        long secondsPassed = ChronoUnit.SECONDS.between(completedDate, LocalDateTime.now());
+        long minutesPassed = ChronoUnit.MINUTES.between(completedDate, LocalDateTime.now());
+        long hoursPassed = ChronoUnit.HOURS.between(completedDate, LocalDateTime.now());
+        long daysPassed = ChronoUnit.DAYS.between(completedDate, LocalDateTime.now());
+        long weeksPassed = ChronoUnit.WEEKS.between(completedDate, LocalDateTime.now());
+        long monthsPassed = ChronoUnit.MONTHS.between(completedDate, LocalDateTime.now());
+        long yearsPassed = ChronoUnit.YEARS.between(completedDate, LocalDateTime.now());
 
         if (secondsPassed < 60) {
             return "less than a minute";

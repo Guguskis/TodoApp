@@ -35,7 +35,7 @@ public class MainScreenController implements Initializable {
 
 
     public void openProjects() throws FileNotFoundException {
-        Parent projectContainer = loader.getComponent("mainscreen/ProjectContainer");
+        Parent projectContainer = loader.getComponent("mainscreen/project/ProjectContainer");
         middlePane.getChildren().clear();
         middlePane.getChildren().add(projectContainer);
     }

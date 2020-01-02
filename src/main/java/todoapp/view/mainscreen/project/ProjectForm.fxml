@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<ScrollPane fx:id="scrollingContainer" hbarPolicy="NEVER" minWidth="800.0" style="-fx-background-color: #333;"
+            xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="main.java.todoapp.controller.mainscreen.project.ProjectFormController">
+    <content>
+        <VBox alignment="CENTER" minWidth="800.0" style="-fx-background-color: #333;">
+            <children>
+                <HBox alignment="CENTER" spacing="30.0" style="-fx-background-color: #333;">
+                    <children>
+                        <Text fill="#aaaaaa" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
+                            <font>
+                                <Font name="Comic Sans MS" size="18.0"/>
+                            </font>
+                        </Text>
+                        <TextField fx:id="username" maxWidth="250.0" nodeOrientation="LEFT_TO_RIGHT"
+                                   style="-fx-background-color: #377;"/>
+                    </children>
+                    <VBox.margin>
+                        <Insets/>
+                    </VBox.margin>
+                </HBox>
+                <VBox fx:id="membersContainer" alignment="CENTER" style="-fx-background-color: #333;">
+                    <VBox.margin>
+                        <Insets bottom="30.0" top="30.0"/>
+                    </VBox.margin>
+                </VBox>
+                <Button mnemonicParsing="false" onAction="#addMember" text="Add member">
+                    <VBox.margin>
+                        <Insets bottom="20.0" top="50.0"/>
+                    </VBox.margin>
+                </Button>
+            </children>
+        </VBox>
+    </content>
+    <padding>
+        <Insets top="100.0"/>
+    </padding>
+</ScrollPane>

@@ -55,7 +55,7 @@ public class User {
     }
 
     public Project getProject(String name) throws NotFoundException {
-        for (var project : projects) {
+        for (Project project : projects) {
             if (project.getName().equals(name)) {
                 return project;
             }
