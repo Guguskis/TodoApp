@@ -61,6 +61,9 @@ public class ProjectConnection {
         for (int i = 0; i < jsonMembers.length(); i++) {
             members.add(jsonMembers.getString(i));
         }
+        String owner = json.getString("owner");
+        members.remove(owner);
+
         return members;
     }
 

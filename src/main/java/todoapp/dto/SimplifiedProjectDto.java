@@ -41,6 +41,7 @@ public class SimplifiedProjectDto {
     }
 
     public int getMemberCount() {
-        return members.size();
+        int owner = 1;
+        return members.size() + owner;
     }
 }

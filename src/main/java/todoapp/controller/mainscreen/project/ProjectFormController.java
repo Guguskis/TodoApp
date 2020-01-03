@@ -86,7 +86,7 @@ public class ProjectFormController implements Initializable {
         };
     }
 
-    public void submit() {
+    public void sendCreate() {
         try {
             List<String> usernames = getUsernames();
             session.createProject(usernames, getName());
@@ -112,7 +112,7 @@ public class ProjectFormController implements Initializable {
         closeWindow();
     }
 
-    public void updateForm() throws IOException, InterruptedException, JSONException {
+    public void sendUpdate() throws IOException, InterruptedException, JSONException {
         try {
             project.setMembers(getUsernames());
             project.setName(getName());

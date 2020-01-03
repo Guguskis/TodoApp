@@ -41,8 +41,8 @@
                         <Button mnemonicParsing="false" onAction="#addEmptyMemberField" text="Add member"/>
                         <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#delete" text="Delete"/>
                         <Button mnemonicParsing="false" onAction="#close" text="Cancel"/>
-                        <Button fx:id="updateButton" mnemonicParsing="false" onAction="#updateForm" text="Update"/>
-                        <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submit" text="Submit"/>
+                        <Button fx:id="updateButton" mnemonicParsing="false" onAction="#sendUpdate" text="Update"/>
+                        <Button fx:id="submitButton" mnemonicParsing="false" onAction="#sendCreate" text="Submit"/>
                     </children>
                 </HBox>
             </children>
