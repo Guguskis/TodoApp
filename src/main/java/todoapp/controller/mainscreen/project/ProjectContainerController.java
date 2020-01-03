@@ -61,8 +61,7 @@ public class ProjectContainerController implements Initializable {
         }
     }
 
-    public void addProject() throws IOException {
-        //Todo project container needs to be refreshed after updating form, so need to pass method to form controller
+    public void openProjectFormCreate() throws IOException {
         FXMLLoader projectFormLoader = getFormLoader();
         Parent projectForm = projectFormLoader.load();
         ProjectFormController controller = projectFormLoader.getController();
@@ -75,14 +74,14 @@ public class ProjectContainerController implements Initializable {
         return loader.getLoaderForComponent("mainscreen/project/ProjectForm");
     }
 
-    public void updateProject() throws IOException {
+    public void openProjectFormUpdate() throws IOException {
         SimplifiedProjectDto project = getSelectedItem();
         FXMLLoader projectFormLoader = getFormLoader();
 
         Parent projectForm = projectFormLoader.load();
         ProjectFormController controller = projectFormLoader.getController();
         controller.setUpdate(project);
-        controller.setUpdateProjectContainer(() -> fillData());
+        controller.setUpdateProjectContainer(this::fillData);
 
         Stage window = javaFxApplication.createWindow(projectForm, "Add project");
         controller.setWindow(window);

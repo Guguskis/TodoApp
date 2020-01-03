@@ -10,10 +10,10 @@
         <ScrollPane>
             <content>
                 <TableView fx:id="table" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                           minWidth="-Infinity" onMouseClicked="#updateProject" prefHeight="400.0"
+                           minWidth="-Infinity" onMouseClicked="#openProjectFormUpdate" prefHeight="400.0"
                            prefWidth="600.0" style="-fx-background-color: #333;"/>
             </content>
         </ScrollPane>
-        <Button mnemonicParsing="false" onAction="#addProject" text="Add project"/>
+        <Button mnemonicParsing="false" onAction="#openProjectFormCreate" text="Add project"/>
     </children>
 </VBox>

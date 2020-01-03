@@ -128,7 +128,7 @@ public class ProjectConnection {
     public void update(SimplifiedProjectDto project) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
         JSONObject json = new JSONObject(project);
         HttpRequest request = createPutRequest(json);
-        HttpResponse response = send(request);
+        HttpResponse<String> response = send(request);
 
         if (response.statusCode() != 200) {
 //            JSONObject responseBodyJson = new JSONObject(response.body());
