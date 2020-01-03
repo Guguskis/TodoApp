@@ -33,7 +33,6 @@ public class ProjectConnection {
 
         JSONArray jsonArray = new JSONArray(response.body());
         List<SimplifiedProjectDto> projects = getSimplifiedProjectsDto(jsonArray);
-
         return projects;
     }
 
@@ -51,8 +50,18 @@ public class ProjectConnection {
         project.setId(json.getLong("id"));
         project.setName(json.getString("name"));
         project.setOwner(json.getString("owner"));
-        project.setMemberCount(json.getInt("memberCount"));
+        List<String> members = getMembers(json);
+        project.setMembers(members);
         return project;
+    }
+
+    private List<String> getMembers(JSONObject json) throws JSONException {
+        JSONArray jsonMembers = json.getJSONArray("members");
+        List<String> members = new ArrayList<>();
+        for (int i = 0; i < jsonMembers.length(); i++) {
+            members.add(jsonMembers.getString(i));
+        }
+        return members;
     }
 
     private HttpRequest createGetRequest(String endpoint) {
@@ -74,6 +83,7 @@ public class ProjectConnection {
         if (response.statusCode() != 201) {
             JSONObject responseBodyJson = new JSONObject(response.body());
             String message = responseBodyJson.getString("message");
+            //Todo remove this
             triggerAlert(message);
         }
     }
@@ -100,5 +110,40 @@ public class ProjectConnection {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public void delete(long id) throws IOException, InterruptedException {
+        HttpRequest request = createDeleteRequest(id);
+        send(request);
+    }
+
+    private HttpRequest createDeleteRequest(long id) {
+        return newBuilder()
+                .DELETE()
+                .uri(URI.create(BASE_URL + id))
+                .header("Content-Type", "application/json")
+                .build();
+    }
+
+    public void update(SimplifiedProjectDto project) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
+        JSONObject json = new JSONObject(project);
+        HttpRequest request = createPutRequest(json);
+        HttpResponse response = send(request);
+
+        if (response.statusCode() != 200) {
+//            JSONObject responseBodyJson = new JSONObject(response.body());
+//            String message = responseBodyJson.getString("message");
+//            throw new HttpRequestFailedException(message);
+            throw new HttpRequestFailedException("Project could not be updated.");
+            //Todo show a good error message
+        }
+    }
+
+    private HttpRequest createPutRequest(JSONObject body) {
+        return newBuilder()
+                .PUT(HttpRequest.BodyPublishers.ofString(body.toString()))
+                .uri(URI.create(BASE_URL))
+                .header("Content-Type", "application/json")
+                .build();
     }
 }

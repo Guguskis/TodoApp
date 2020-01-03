@@ -10,8 +10,8 @@
         <ScrollPane>
             <content>
                 <TableView fx:id="table" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                           minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0"
-                           style="-fx-background-color: #333;"/>
+                           minWidth="-Infinity" onMouseClicked="#updateProject" prefHeight="400.0"
+                           prefWidth="600.0" style="-fx-background-color: #333;"/>
             </content>
         </ScrollPane>
         <Button mnemonicParsing="false" onAction="#addProject" text="Add project"/>

@@ -59,4 +59,12 @@ public class Session {
     public void createProject(List<String> usernames, String name) throws InterruptedException, IOException, JSONException {
         projectConnection.create(currentUser.getUsername(), usernames, name);
     }
+
+    public void deleteProject(long id) throws IOException, InterruptedException {
+        projectConnection.delete(id);
+    }
+
+    public void updateProject(SimplifiedProjectDto project) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
+        projectConnection.update(project);
+    }
 }

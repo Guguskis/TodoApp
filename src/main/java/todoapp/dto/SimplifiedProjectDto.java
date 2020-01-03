@@ -1,10 +1,12 @@
 package main.java.todoapp.dto;
 
+import java.util.List;
+
 public class SimplifiedProjectDto {
     private long id;
     private String name;
     private String owner;
-    private int memberCount;
+    private List<String> members;
 
     public long getId() {
         return id;
@@ -30,11 +32,15 @@ public class SimplifiedProjectDto {
         this.owner = owner;
     }
 
-    public int getMemberCount() {
-        return memberCount;
+    public List<String> getMembers() {
+        return members;
     }
 
-    public void setMemberCount(int memberCount) {
-        this.memberCount = memberCount;
+    public void setMembers(List<String> members) {
+        this.members = members;
+    }
+
+    public int getMemberCount() {
+        return members.size();
     }
 }

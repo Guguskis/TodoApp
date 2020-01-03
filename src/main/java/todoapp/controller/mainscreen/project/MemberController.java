@@ -44,4 +44,8 @@ public class MemberController implements Initializable {
         }
         return username.getText();
     }
+
+    public void setUsername(String username) {
+        this.username.setText(username);
+    }
 }

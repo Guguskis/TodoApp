@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<ScrollPane fx:id="scrollingContainer" hbarPolicy="NEVER" minWidth="800.0" style="-fx-background-color: #333;"
+<ScrollPane hbarPolicy="NEVER" minWidth="800.0" style="-fx-background-color: #333;"
             xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="main.java.todoapp.controller.mainscreen.project.ProjectFormController">
     <content>
@@ -38,9 +38,11 @@
                         <Insets bottom="20.0" top="50.0"/>
                     </VBox.margin>
                     <children>
-                        <Button mnemonicParsing="false" onAction="#addMember" text="Add member"/>
-                        <Button mnemonicParsing="false" onAction="#close" text="cancel"/>
-                        <Button mnemonicParsing="false" onAction="#submit" text="Submit"/>
+                        <Button mnemonicParsing="false" onAction="#addEmptyMemberField" text="Add member"/>
+                        <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#delete" text="Delete"/>
+                        <Button mnemonicParsing="false" onAction="#close" text="Cancel"/>
+                        <Button fx:id="updateButton" mnemonicParsing="false" onAction="#updateForm" text="Update"/>
+                        <Button fx:id="submitButton" mnemonicParsing="false" onAction="#submit" text="Submit"/>
                     </children>
                 </HBox>
             </children>

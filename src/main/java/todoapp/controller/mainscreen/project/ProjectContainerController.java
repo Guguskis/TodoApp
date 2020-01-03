@@ -33,11 +33,10 @@ public class ProjectContainerController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addColumns();
-        fillTable();
+        fillData();
     }
 
     private void addColumns() {
-        addInvisibleColumn("Id", "id");
         addColumn("Name", "name", 300);
         addColumn("Owner", "owner", 100);
         addColumn("Members", "memberCount", 50);
@@ -50,18 +49,11 @@ public class ProjectContainerController implements Initializable {
         table.getColumns().add(column);
     }
 
-    private void addInvisibleColumn(String columnName, String propertyName) {
-        TableColumn<String, SimplifiedProjectDto> column = new TableColumn<>(columnName);
-        column.setCellValueFactory(new PropertyValueFactory<>(propertyName));
-        column.setVisible(false);
-        table.getColumns().add(column);
-    }
-
-    private void fillTable() {
+    private void fillData() {
         try {
             List<SimplifiedProjectDto> projects = session.getProjects();
-            ObservableList<SimplifiedProjectDto> runnerList = FXCollections.observableArrayList(projects);
-            table.setItems(runnerList);
+            ObservableList<SimplifiedProjectDto> observableProjects = FXCollections.observableArrayList(projects);
+            table.setItems(observableProjects);
         } catch (InterruptedException | JSONException | IOException e) {
             e.printStackTrace();
         } catch (HttpRequestFailedException e) {
@@ -70,10 +62,34 @@ public class ProjectContainerController implements Initializable {
     }
 
     public void addProject() throws IOException {
-        FXMLLoader projectFormLoader = loader.getLoaderForComponent("mainscreen/project/ProjectForm");
+        //Todo project container needs to be refreshed after updating form, so need to pass method to form controller
+        FXMLLoader projectFormLoader = getFormLoader();
         Parent projectForm = projectFormLoader.load();
         ProjectFormController controller = projectFormLoader.getController();
         Stage window = javaFxApplication.createWindow(projectForm, "Add project");
         controller.setWindow(window);
+        controller.setUpdateProjectContainer(this::fillData);
     }
+
+    private FXMLLoader getFormLoader() throws IOException {
+        return loader.getLoaderForComponent("mainscreen/project/ProjectForm");
+    }
+
+    public void updateProject() throws IOException {
+        SimplifiedProjectDto project = getSelectedItem();
+        FXMLLoader projectFormLoader = getFormLoader();
+
+        Parent projectForm = projectFormLoader.load();
+        ProjectFormController controller = projectFormLoader.getController();
+        controller.setUpdate(project);
+        controller.setUpdateProjectContainer(() -> fillData());
+
+        Stage window = javaFxApplication.createWindow(projectForm, "Add project");
+        controller.setWindow(window);
+    }
+
+    private SimplifiedProjectDto getSelectedItem() {
+        return (SimplifiedProjectDto) table.getSelectionModel().getSelectedItem();
+    }
+
 }
