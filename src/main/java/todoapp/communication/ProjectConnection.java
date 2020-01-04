@@ -3,6 +3,7 @@ package main.java.todoapp.communication;
 import javafx.scene.control.Alert;
 import main.java.todoapp.dto.SimplifiedProjectDto;
 import main.java.todoapp.exceptions.HttpRequestFailedException;
+import main.java.todoapp.helper.JSONParser;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,7 +13,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.net.http.HttpRequest.newBuilder;
@@ -22,6 +22,11 @@ public class ProjectConnection {
     private final HttpClient httpClient = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_2)
             .build();
+    private final JSONParser parser;
+
+    public ProjectConnection(JSONParser parser) {
+        this.parser = parser;
+    }
 
     public List<SimplifiedProjectDto> getProjects(String username) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
         HttpRequest request = createGetRequest(username);
@@ -30,41 +35,7 @@ public class ProjectConnection {
         if (response.statusCode() != 200) {
             throw new HttpRequestFailedException("Failed to get project list");
         }
-
-        JSONArray jsonArray = new JSONArray(response.body());
-        List<SimplifiedProjectDto> projects = getSimplifiedProjectsDto(jsonArray);
-        return projects;
-    }
-
-    private List<SimplifiedProjectDto> getSimplifiedProjectsDto(JSONArray jsonArray) throws JSONException {
-        List<SimplifiedProjectDto> projects = new ArrayList<>();
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject json = (JSONObject) jsonArray.get(i);
-            projects.add(parseSimplifiedProjectDto(json));
-        }
-        return projects;
-    }
-
-    private SimplifiedProjectDto parseSimplifiedProjectDto(JSONObject json) throws JSONException {
-        SimplifiedProjectDto project = new SimplifiedProjectDto();
-        project.setId(json.getLong("id"));
-        project.setName(json.getString("name"));
-        project.setOwner(json.getString("owner"));
-        List<String> members = getMembers(json);
-        project.setMembers(members);
-        return project;
-    }
-
-    private List<String> getMembers(JSONObject json) throws JSONException {
-        JSONArray jsonMembers = json.getJSONArray("members");
-        List<String> members = new ArrayList<>();
-        for (int i = 0; i < jsonMembers.length(); i++) {
-            members.add(jsonMembers.getString(i));
-        }
-        String owner = json.getString("owner");
-        members.remove(owner);
-
-        return members;
+        return parser.simplifiedProjectsDto(new JSONArray(response.body()));
     }
 
     private HttpRequest createGetRequest(String endpoint) {
@@ -80,7 +51,8 @@ public class ProjectConnection {
     }
 
     public void create(String owner, List<String> usernames, String name) throws JSONException, IOException, InterruptedException {
-        HttpRequest request = createPostRequest(getProjectJson(owner, usernames, name), "");
+        SimplifiedProjectDto project = new SimplifiedProjectDto(name, owner, usernames);
+        HttpRequest request = createPostRequest(parser.parse(project), "");
         HttpResponse<String> response = send(request);
 
         if (response.statusCode() != 201) {
@@ -89,14 +61,6 @@ public class ProjectConnection {
             //Todo remove this
             triggerAlert(message);
         }
-    }
-
-    private JSONObject getProjectJson(String owner, List<String> usernames, String name) throws JSONException {
-        JSONObject json = new JSONObject();
-        json.put("projectName", name);
-        json.put("ownerUsername", owner);
-        json.put("members", usernames);
-        return json;
     }
 
     private HttpRequest createPostRequest(JSONObject body, String endpoint) {
@@ -128,7 +92,7 @@ public class ProjectConnection {
                 .build();
     }
 
-    public void update(SimplifiedProjectDto project) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
+    public void update(SimplifiedProjectDto project) throws IOException, InterruptedException, HttpRequestFailedException {
         JSONObject json = new JSONObject(project);
         HttpRequest request = createPutRequest(json);
         HttpResponse<String> response = send(request);

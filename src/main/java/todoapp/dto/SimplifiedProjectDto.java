@@ -8,6 +8,16 @@ public class SimplifiedProjectDto {
     private String owner;
     private List<String> members;
 
+    public SimplifiedProjectDto() {
+
+    }
+
+    public SimplifiedProjectDto(String name, String owner, List<String> members) {
+        this.name = name;
+        this.owner = owner;
+        this.members = members;
+    }
+
     public long getId() {
         return id;
     }

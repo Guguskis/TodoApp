@@ -3,6 +3,7 @@ package main.java.todoapp.communication;
 import main.java.todoapp.dto.SimplifiedProjectDto;
 import main.java.todoapp.exceptions.HttpRequestFailedException;
 import main.java.todoapp.exceptions.RegistrationFailedException;
+import main.java.todoapp.helper.JSONParser;
 import main.java.todoapp.model.Company;
 import main.java.todoapp.model.Person;
 import main.java.todoapp.model.User;
@@ -13,8 +14,8 @@ import java.util.List;
 
 public class Session {
     private static Session instance;
-    private final UserConnection userConnection = new UserConnection();
-    private final ProjectConnection projectConnection = new ProjectConnection();
+    private final UserConnection userConnection = new UserConnection(new JSONParser());
+    private final ProjectConnection projectConnection = new ProjectConnection(new JSONParser());
 
     private User currentUser;
 

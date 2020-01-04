@@ -2,6 +2,7 @@ package main.java.todoapp.communication;
 
 import main.java.todoapp.exceptions.HttpRequestFailedException;
 import main.java.todoapp.exceptions.RegistrationFailedException;
+import main.java.todoapp.helper.JSONParser;
 import main.java.todoapp.model.Company;
 import main.java.todoapp.model.Person;
 import main.java.todoapp.model.User;
@@ -26,9 +27,14 @@ public class UserConnection {
     private final HttpClient httpClient = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_2)
             .build();
+    private JSONParser parser;
+
+    public UserConnection(JSONParser parser) {
+        this.parser = parser;
+    }
 
     public boolean verify(String username, String password) throws IOException, InterruptedException {
-        JSONObject userJson = getUserJson(new User(username, password));
+        JSONObject userJson = parser.parse(new User(username, password));
         HttpRequest request = createPostRequest(userJson, "verify");
         HttpResponse<String> response = send(request);
         return response.body().equals("true");
@@ -60,7 +66,7 @@ public class UserConnection {
             throw new HttpRequestFailedException("Failed to get user info");
         }
 
-        return getUser(response.body());
+        return parser.user(new JSONObject(response.body()));
     }
 
     public void updateUserInformation(User user) throws IOException, InterruptedException, HttpRequestFailedException {
@@ -90,47 +96,6 @@ public class UserConnection {
                 .build();
     }
 
-    private User getUser(String responseBody) throws Exception {
-        JSONObject json = new JSONObject(responseBody);
-        if (isCompany(json)) {
-            return getCompany(json);
-        } else if (isPerson(json)) {
-            return getPerson(json);
-        } else {
-            throw new Exception("Server and client types do not match.");
-        }
-    }
-
-    private Person getPerson(JSONObject json) throws JSONException {
-        Person person = new Person();
-        person.setId(json.getInt("id"));
-        person.setUsername(json.getString("username"));
-        person.setPassword(json.getString("password"));
-        person.setFirstName(json.getString("firstName"));
-        person.setLastName(json.getString("lastName"));
-        person.setPhone(json.getString("phone"));
-        person.setEmail(json.getString("email"));
-        return person;
-    }
-
-    private Company getCompany(JSONObject json) throws JSONException {
-        Company company = new Company();
-        company.setId(json.getInt("id"));
-        company.setUsername(json.getString("username"));
-        company.setPassword(json.getString("password"));
-        company.setName(json.getString("name"));
-        company.setContactPersonPhone(json.getString("contactPersonPhone"));
-        return company;
-    }
-
-    private boolean isPerson(JSONObject json) {
-        return json.has("firstName") && json.has("lastName") && json.has("phone") && json.has("email");
-    }
-
-    private boolean isCompany(JSONObject json) {
-        return json.has("name") && json.has("contactPersonPhone");
-    }
-
     private HttpRequest createGetRequest(String endpoint) {
         return newBuilder()
                 .GET()
@@ -149,17 +114,6 @@ public class UserConnection {
                 .uri(URI.create(BASE_URL + endpoint))
                 .header("Content-Type", "application/json")
                 .build();
-    }
-
-    private JSONObject getUserJson(User user) {
-        JSONObject userJson = new JSONObject();
-        try {
-            userJson.put("username", user.getUsername());
-            userJson.put("password", user.getPassword());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return userJson;
     }
 
     private JSONObject getPersonJson(Person person) {
