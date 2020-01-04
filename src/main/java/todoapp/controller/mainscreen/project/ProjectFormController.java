@@ -43,7 +43,7 @@ public class ProjectFormController implements Initializable {
     public VBox membersContainer;
     @FXML
     public TextField name;
-    private SimplifiedProjectDto project;
+    private SimplifiedProjectDto project = new SimplifiedProjectDto();
     private Runnable updateProjectContainerData;
 
     @Override

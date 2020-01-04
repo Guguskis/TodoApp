@@ -65,4 +65,8 @@ public class CompanyFormController implements Initializable {
 
         return false;
     }
+
+    public void setUsernameEditable(boolean editable) {
+        username.setEditable(editable);
+    }
 }

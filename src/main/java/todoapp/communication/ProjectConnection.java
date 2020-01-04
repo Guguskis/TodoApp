@@ -91,17 +91,15 @@ public class ProjectConnection {
                 .build();
     }
 
-    public void update(SimplifiedProjectDto project) throws IOException, InterruptedException, HttpRequestFailedException {
+    public void update(SimplifiedProjectDto project) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
         JSONObject json = new JSONObject(project);
         HttpRequest request = createPutRequest(json);
         HttpResponse<String> response = send(request);
 
         if (response.statusCode() != 200) {
-//            JSONObject responseBodyJson = new JSONObject(response.body());
-//            String message = responseBodyJson.getString("message");
-//            throw new HttpRequestFailedException(message);
-            throw new HttpRequestFailedException("Project could not be updated.");
-            //Todo show a good error message
+            JSONObject responseBodyJson = new JSONObject(response.body());
+            String message = responseBodyJson.getString("message");
+            throw new HttpRequestFailedException(message);
         }
     }
 

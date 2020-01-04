@@ -16,6 +16,7 @@ import main.java.todoapp.exceptions.InvalidTypeException;
 import main.java.todoapp.model.Company;
 import main.java.todoapp.model.Person;
 import main.java.todoapp.model.User;
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.URL;
@@ -51,13 +52,11 @@ public class AccountSettingsContainerController implements Initializable {
         }
     }
 
-    public void updateUserInformation() throws IOException, InterruptedException {
+    public void updateUserInformation() throws IOException, InterruptedException, JSONException {
         try {
             session.updateUserInformation(getUser());
             triggerConfirmationAlert("Your information was successfully updated!");
-        } catch (HttpRequestFailedException e) {
-            triggerErrorAlert("Failed to update your information.");
-        } catch (EmptyFieldException | InvalidTypeException e) {
+        } catch (HttpRequestFailedException | EmptyFieldException | InvalidTypeException e) {
             triggerErrorAlert(e.getMessage());
         }
     }
@@ -92,11 +91,13 @@ public class AccountSettingsContainerController implements Initializable {
     private void loadAndFillCompanyForm(Company user) throws IOException {
         setCompanyForm();
         companyController.setCompany(user);
+        companyController.setUsernameEditable(false);
     }
 
     private void loadAndFillPersonForm(Person user) throws IOException {
         setPersonForm();
         personController.setPerson(user);
+        personController.setUsernameEditable(false);
     }
 
     private void setPersonForm() throws IOException {

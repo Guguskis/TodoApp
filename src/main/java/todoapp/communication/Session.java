@@ -46,7 +46,7 @@ public class Session {
         return userConnection.getUserInfo(currentUser.getUsername());
     }
 
-    public void updateUserInformation(User user) throws IOException, InterruptedException, HttpRequestFailedException {
+    public void updateUserInformation(User user) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
         user.setId(currentUser.getId());
 
         userConnection.updateUserInformation(user);

@@ -63,13 +63,15 @@ public class UserConnection {
         HttpResponse<String> response = send(request);
 
         if (response.statusCode() != 200) {
-            throw new HttpRequestFailedException("Failed to get user info");
+            JSONObject responseBodyJson = new JSONObject(response.body());
+            String message = responseBodyJson.getString("message");
+            throw new HttpRequestFailedException(message);
         }
 
         return parser.user(new JSONObject(response.body()));
     }
 
-    public void updateUserInformation(User user) throws IOException, InterruptedException, HttpRequestFailedException {
+    public void updateUserInformation(User user) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
         JSONObject json;
         String endpoint;
         if (user instanceof Person) {
@@ -84,7 +86,9 @@ public class UserConnection {
         HttpResponse<String> response = send(request);
 
         if (response.statusCode() != 200) {
-            throw new HttpRequestFailedException("Failed to update user information.");
+            JSONObject responseBodyJson = new JSONObject(response.body());
+            String message = responseBodyJson.getString("message");
+            throw new HttpRequestFailedException(message);
         }
     }
 

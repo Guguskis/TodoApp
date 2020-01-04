@@ -78,4 +78,8 @@ public class PersonFormController implements Initializable {
         phone.setText(person.getPhone());
         email.setText(person.getEmail());
     }
+
+    public void setUsernameEditable(boolean editable) {
+        username.setEditable(editable);
+    }
 }
