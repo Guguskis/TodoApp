@@ -41,7 +41,7 @@ public class UserConnection {
     }
 
     public void register(Company company) throws IOException, InterruptedException, RegistrationFailedException {
-        HttpRequest request = createPostRequest(getCompanyJson(company), "/company");
+        HttpRequest request = createPostRequest(parser.getCompanyJson(company), "/company");
         HttpResponse<String> response = send(request);
 
         if (response.statusCode() != 201) {
@@ -50,7 +50,7 @@ public class UserConnection {
     }
 
     public void register(Person person) throws RegistrationFailedException, IOException, InterruptedException {
-        HttpRequest request = createPostRequest(getPersonJson(person), "/person");
+        HttpRequest request = createPostRequest(parser.getPersonJson(person), "/person");
         HttpResponse<String> response = send(request);
 
         if (response.statusCode() != 201) {
@@ -75,10 +75,10 @@ public class UserConnection {
         JSONObject json;
         String endpoint;
         if (user instanceof Person) {
-            json = getPersonJson((Person) user);
+            json = parser.getPersonJson((Person) user);
             endpoint = "person";
         } else {
-            json = getCompanyJson((Company) user);
+            json = parser.getCompanyJson((Company) user);
             endpoint = "company";
         }
 
@@ -120,34 +120,4 @@ public class UserConnection {
                 .build();
     }
 
-    private JSONObject getPersonJson(Person person) {
-        JSONObject personJson = new JSONObject();
-        try {
-            personJson.put("id", person.getId());
-            personJson.put("firstName", person.getFirstName());
-            personJson.put("lastName", person.getLastName());
-            personJson.put("phone", person.getPhone());
-            personJson.put("email", person.getEmail());
-            personJson.put("username", person.getUsername());
-            personJson.put("password", person.getPassword());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return personJson;
-    }
-
-    private JSONObject getCompanyJson(Company company) {
-        JSONObject companyJson = null;
-        try {
-            companyJson = new JSONObject();
-            companyJson.put("id", company.getId());
-            companyJson.put("name", company.getName());
-            companyJson.put("contactPersonPhone", company.getContactPersonPhone());
-            companyJson.put("username", company.getUsername());
-            companyJson.put("password", company.getPassword());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return companyJson;
-    }
 }

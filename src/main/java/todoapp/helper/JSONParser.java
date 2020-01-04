@@ -13,19 +13,17 @@ import java.util.List;
 
 public class JSONParser {
     public JSONObject parse(User user) {
-        //Todo just use new JSONObject(user)
-        JSONObject userJson = new JSONObject();
+        JSONObject json = new JSONObject();
         try {
-            userJson.put("username", user.getUsername());
-            userJson.put("password", user.getPassword());
+            json.put("username", user.getUsername());
+            json.put("password", user.getPassword());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return userJson;
+        return json;
     }
 
     public JSONObject parse(SimplifiedProjectDto project) throws JSONException {
-        //Todo just use new JSONObject(project)
         JSONObject json = new JSONObject();
         json.put("projectName", project.getName());
         json.put("ownerUsername", project.getOwner());
@@ -102,5 +100,36 @@ public class JSONParser {
 
     private boolean isCompany(JSONObject json) {
         return json.has("name") && json.has("contactPersonPhone");
+    }
+
+    public JSONObject getPersonJson(Person person) {
+        JSONObject personJson = new JSONObject();
+        try {
+            personJson.put("id", person.getId());
+            personJson.put("firstName", person.getFirstName());
+            personJson.put("lastName", person.getLastName());
+            personJson.put("phone", person.getPhone());
+            personJson.put("email", person.getEmail());
+            personJson.put("username", person.getUsername());
+            personJson.put("password", person.getPassword());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return personJson;
+    }
+
+    public JSONObject getCompanyJson(Company company) {
+        JSONObject companyJson = null;
+        try {
+            companyJson = new JSONObject();
+            companyJson.put("id", company.getId());
+            companyJson.put("name", company.getName());
+            companyJson.put("contactPersonPhone", company.getContactPersonPhone());
+            companyJson.put("username", company.getUsername());
+            companyJson.put("password", company.getPassword());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return companyJson;
     }
 }
