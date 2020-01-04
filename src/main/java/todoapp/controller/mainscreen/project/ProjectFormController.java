@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.java.todoapp.ComponentLoader;
@@ -32,6 +33,8 @@ public class ProjectFormController implements Initializable {
 
     private Stage window;
     private List<MemberController> membersController;
+    private SimplifiedProjectDto project = new SimplifiedProjectDto();
+    private Runnable updateProjectContainerData;
 
     @FXML
     public Button deleteButton;
@@ -40,35 +43,51 @@ public class ProjectFormController implements Initializable {
     @FXML
     public Button submitButton;
     @FXML
+    public Button addMemberButton;
+
+    @FXML
     public VBox membersContainer;
     @FXML
     public TextField name;
-    private SimplifiedProjectDto project = new SimplifiedProjectDto();
-    private Runnable updateProjectContainerData;
+    @FXML
+    public TextField owner;
+    @FXML
+    public HBox ownerRow;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         membersController = new ArrayList<>();
         setButtonsForSubmit();
+        ownerRow.setVisible(false);
     }
 
     private void setButtonsForSubmit() {
-        setDeleteButtonVisibility(false);
-        setUpdateButtonVisibility(false);
-        setSubmitButtonVisibility(true);
+        deleteButton.setVisible(false);
+        updateButton.setVisible(false);
+    }
+
+    private void setButtonsForReadOnly() {
+        deleteButton.setVisible(false);
+        updateButton.setVisible(false);
+        submitButton.setVisible(false);
+        addMemberButton.setVisible(false);
     }
 
     public void addEmptyMemberField() throws IOException {
-        addMemberFieldWithUsername("");
+        addMemberFieldWithUsername("", true);
     }
 
-    public void addMemberFieldWithUsername(String username) throws IOException {
+    public void addMemberFieldWithUsername(String username, boolean editable) throws IOException {
         FXMLLoader memberLoader = loader.getLoaderForComponent("mainscreen/project/Member");
         Parent member = memberLoader.load();
 
         MemberController controller = memberLoader.getController();
         controller.setRemove(remove());
         controller.setUsername(username);
+
+        if (!editable) {
+            controller.makeUneditable();
+        }
 
         membersContainer.getChildren().add(member);
         membersController.add(controller);
@@ -88,7 +107,7 @@ public class ProjectFormController implements Initializable {
 
     public void sendCreate() throws InterruptedException, JSONException, IOException {
         try {
-            List<String> usernames = getUsernames();
+            List<String> usernames = getMembers();
             session.createProject(usernames, getName());
             closeWindow();
         } catch (EmptyFieldException | HttpRequestFailedException | DuplicateException e) {
@@ -110,9 +129,10 @@ public class ProjectFormController implements Initializable {
         closeWindow();
     }
 
-    public void sendUpdate() throws IOException, InterruptedException, JSONException {
+    public void sendUpdate() throws Throwable {
         try {
-            project.setMembers(getUsernames());
+            List<String> members = getMembersWithOwner();
+            project.setMembers(members);
             project.setName(getName());
             session.updateProject(project);
             closeWindow();
@@ -121,16 +141,44 @@ public class ProjectFormController implements Initializable {
         }
     }
 
-    public void setUpdate(SimplifiedProjectDto project) throws IOException {
-        //Todo do not allow to edit fields if not owner (and show owner username field)
-        setProject(project);
-        setButtonsForUpdate();
+    private List<String> getMembersWithOwner() throws Throwable {
+        List<String> members = getMembers();
+        members.add(session.getCurrentUser().getUsername());
+        return members;
+    }
+
+    public void setUpdate(SimplifiedProjectDto project, Runnable updateParent) throws Throwable {
+        if (notOwner(project)) {
+            setButtonsForReadOnly();
+            makeFieldsUneditable();
+            setAndShowOwner(project.getOwner());
+            setProject(project, false);
+        } else {
+            setButtonsForUpdate();
+            setProject(project, true);
+        }
+
+        setUpdateParent(updateParent);
+    }
+
+    private void makeFieldsUneditable() {
+        name.setEditable(false);
+        owner.setEditable(false);
+    }
+
+    private void setAndShowOwner(String username) {
+        owner.setText(username);
+        ownerRow.setVisible(true);
+    }
+
+    private boolean notOwner(SimplifiedProjectDto project) throws Throwable {
+        return !project.getOwner().trim().equals(session.getCurrentUser().getUsername());
     }
 
     private void setButtonsForUpdate() {
-        setDeleteButtonVisibility(true);
-        setUpdateButtonVisibility(true);
-        setSubmitButtonVisibility(false);
+        deleteButton.setVisible(true);
+        updateButton.setVisible(true);
+        submitButton.setVisible(false);
     }
 
     private void closeWindow() {
@@ -145,17 +193,17 @@ public class ProjectFormController implements Initializable {
         return name.getText();
     }
 
-    private List<String> getUsernames() throws EmptyFieldException, DuplicateException {
-        List<String> usernames = new ArrayList<>();
+    private List<String> getMembers() throws EmptyFieldException, DuplicateException {
+        List<String> members = new ArrayList<>();
         for (MemberController member : membersController) {
-            usernames.add(member.getUsername());
+            members.add(member.getUsername());
         }
 
-        if (hasDuplicates(usernames)) {
+        if (hasDuplicates(members)) {
             throw new DuplicateException("There cannot be duplicates.");
         }
 
-        return usernames;
+        return members;
     }
 
     private boolean hasDuplicates(List<String> usernames) {
@@ -171,32 +219,20 @@ public class ProjectFormController implements Initializable {
         alert.showAndWait();
     }
 
-    private void setProject(SimplifiedProjectDto project) throws IOException {
+    private void setProject(SimplifiedProjectDto project, boolean editable) throws IOException {
         this.project = project;
-        setFields();
+        setFields(editable);
     }
 
-    private void setFields() throws IOException {
+    private void setFields(boolean editable) throws IOException {
         name.setText(project.getName());
 
         for (String member : project.getMembers()) {
-            addMemberFieldWithUsername(member);
+            addMemberFieldWithUsername(member, editable);
         }
     }
 
-    private void setDeleteButtonVisibility(boolean visible) {
-        deleteButton.setVisible(visible);
-    }
-
-    private void setUpdateButtonVisibility(boolean visible) {
-        updateButton.setVisible(visible);
-    }
-
-    private void setSubmitButtonVisibility(boolean visible) {
-        submitButton.setVisible(visible);
-    }
-
-    public void setUpdateProjectContainer(Runnable updateProjectContainerData) {
+    public void setUpdateParent(Runnable updateProjectContainerData) {
         this.updateProjectContainerData = updateProjectContainerData;
     }
 }

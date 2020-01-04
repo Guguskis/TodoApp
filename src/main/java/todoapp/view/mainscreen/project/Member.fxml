@@ -24,7 +24,7 @@
                 <Insets right="20.0"/>
             </HBox.margin>
         </TextField>
-        <Button mnemonicParsing="false" onAction="#removeMember" text="X"/>
+        <Button fx:id="removeButton" mnemonicParsing="false" onAction="#removeMember" text="X"/>
    </children>
    <padding>
        <Insets left="20.0" right="20.0"/>

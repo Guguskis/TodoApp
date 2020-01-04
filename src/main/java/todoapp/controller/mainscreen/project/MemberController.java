@@ -2,6 +2,7 @@ package main.java.todoapp.controller.mainscreen.project;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import main.java.todoapp.exceptions.EmptyFieldException;
 
@@ -13,6 +14,8 @@ public class MemberController implements Initializable {
     private static int counter = 0;
     @FXML
     public TextField username;
+    @FXML
+    public Button removeButton;
 
     private int index;
     private IntConsumer remove;
@@ -47,5 +50,10 @@ public class MemberController implements Initializable {
 
     public void setUsername(String username) {
         this.username.setText(username);
+    }
+
+    public void makeUneditable() {
+        username.setEditable(false);
+        removeButton.setVisible(false);
     }
 }

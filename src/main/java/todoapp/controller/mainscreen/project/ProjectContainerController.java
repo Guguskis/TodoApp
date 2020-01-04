@@ -67,21 +67,20 @@ public class ProjectContainerController implements Initializable {
         ProjectFormController controller = projectFormLoader.getController();
         Stage window = javaFxApplication.createWindow(projectForm, "Add project");
         controller.setWindow(window);
-        controller.setUpdateProjectContainer(this::fillData);
+        controller.setUpdateParent(this::fillData);
     }
 
     private FXMLLoader getFormLoader() throws IOException {
         return loader.getLoaderForComponent("mainscreen/project/ProjectForm");
     }
 
-    public void openProjectFormUpdate() throws IOException {
+    public void openProjectFormUpdate() throws Throwable {
         SimplifiedProjectDto project = getSelectedItem();
         FXMLLoader projectFormLoader = getFormLoader();
 
         Parent projectForm = projectFormLoader.load();
         ProjectFormController controller = projectFormLoader.getController();
-        controller.setUpdate(project);
-        controller.setUpdateProjectContainer(this::fillData);
+        controller.setUpdate(project, this::fillData);
 
         Stage window = javaFxApplication.createWindow(projectForm, "Add project");
         controller.setWindow(window);

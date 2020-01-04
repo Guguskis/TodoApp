@@ -42,7 +42,7 @@ public class Session {
         userConnection.register(company);
     }
 
-    public User getUserInformation() throws Throwable {
+    public User getCurrentUser() throws Throwable {
         return userConnection.getUserInfo(currentUser.getUsername());
     }
 
