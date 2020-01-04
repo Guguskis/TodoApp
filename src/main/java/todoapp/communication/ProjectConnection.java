@@ -50,7 +50,7 @@ public class ProjectConnection {
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    public void create(String owner, List<String> usernames, String name) throws JSONException, IOException, InterruptedException {
+    public void create(String owner, List<String> usernames, String name) throws JSONException, IOException, InterruptedException, HttpRequestFailedException {
         SimplifiedProjectDto project = new SimplifiedProjectDto(name, owner, usernames);
         HttpRequest request = createPostRequest(parser.parse(project), "");
         HttpResponse<String> response = send(request);
@@ -58,8 +58,7 @@ public class ProjectConnection {
         if (response.statusCode() != 201) {
             JSONObject responseBodyJson = new JSONObject(response.body());
             String message = responseBodyJson.getString("message");
-            //Todo remove this
-            triggerAlert(message);
+            throw new HttpRequestFailedException(message);
         }
     }
 

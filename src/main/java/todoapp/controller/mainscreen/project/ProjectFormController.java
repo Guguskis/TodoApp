@@ -86,15 +86,13 @@ public class ProjectFormController implements Initializable {
         };
     }
 
-    public void sendCreate() {
+    public void sendCreate() throws InterruptedException, JSONException, IOException {
         try {
             List<String> usernames = getUsernames();
             session.createProject(usernames, getName());
             closeWindow();
-        } catch (EmptyFieldException | DuplicateException e) {
+        } catch (EmptyFieldException | HttpRequestFailedException | DuplicateException e) {
             triggerAlert(e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
     }
@@ -124,6 +122,7 @@ public class ProjectFormController implements Initializable {
     }
 
     public void setUpdate(SimplifiedProjectDto project) throws IOException {
+        //Todo do not allow to edit fields if not owner (and show owner username field)
         setProject(project);
         setButtonsForUpdate();
     }
