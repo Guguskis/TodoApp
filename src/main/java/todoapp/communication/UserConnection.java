@@ -37,7 +37,7 @@ public class UserConnection {
         return response.body().equals("true");
     }
 
-    public User sendGet(String username) throws Throwable {
+    public User sendGet(String username) throws IOException, InterruptedException, JSONException, HttpRequestFailedException {
         HttpRequest request = createGetRequest(username);
         HttpResponse<String> response = send(request);
 
@@ -86,26 +86,28 @@ public class UserConnection {
     }
 
     private HttpRequest createPutRequest(JSONObject body, String endpoint) {
-        return newBuilder()
+        return getJSONRequest()
                 .PUT(HttpRequest.BodyPublishers.ofString(body.toString()))
                 .uri(URI.create(BASE_URL + endpoint))
-                .header("Content-Type", "application/json")
                 .build();
     }
 
-    private HttpRequest createGetRequest(String endpoint) {
+    private HttpRequest.Builder getJSONRequest() {
         return newBuilder()
+                .header("Content-Type", "application/json");
+    }
+
+    private HttpRequest createGetRequest(String endpoint) {
+        return getJSONRequest()
                 .GET()
                 .uri(URI.create(BASE_URL + endpoint))
-                .header("Content-Type", "application/json")
                 .build();
     }
 
     private HttpRequest createPostRequest(JSONObject body, String endpoint) {
-        return newBuilder()
+        return getJSONRequest()
                 .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
                 .uri(URI.create(BASE_URL + endpoint))
-                .header("Content-Type", "application/json")
                 .build();
     }
 

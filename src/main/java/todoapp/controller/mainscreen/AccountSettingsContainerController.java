@@ -37,12 +37,12 @@ public class AccountSettingsContainerController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
             loadUserInformation();
-        } catch (Throwable throwable) {
-            System.out.println("Unable to get person info");
+        } catch (IOException e) {
+            triggerErrorAlert("Unable to get person info");
         }
     }
 
-    private void loadUserInformation() throws Throwable {
+    private void loadUserInformation() throws IOException {
         currentUser = session.getUser();
 
         if (currentUser instanceof Person) {

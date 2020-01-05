@@ -21,7 +21,6 @@ public class CreateTaskFormController implements Initializable {
     private Stage window;
     private long parentTaskId;
     private long projectId;
-    private long taskId;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

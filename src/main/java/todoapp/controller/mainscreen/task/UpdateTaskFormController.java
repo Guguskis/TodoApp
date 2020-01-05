@@ -63,8 +63,8 @@ public class UpdateTaskFormController implements Initializable {
         Parent form = taskFormLoader.load();
 
         CreateTaskFormController controller = taskFormLoader.getController();
-        Stage window = mainApplication.createWindow(form, "Create task form");
-        controller.setTask(refreshTestContainerData, window, task.getId());
+        Stage formWindow = mainApplication.createWindow(form, "Create task form");
+        controller.setTask(refreshTestContainerData, formWindow, task.getId());
     }
 
     public void deleteTask() throws InterruptedException, IOException, JSONException {

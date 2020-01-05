@@ -83,7 +83,7 @@ public class Session {
         return taskConnection.sendGet(projectId);
     }
 
-    public void createTaskForProject(long projectId, String title) throws Throwable {
+    public void createTaskForProject(long projectId, String title) throws InterruptedException, JSONException, HttpRequestFailedException, IOException {
         CreateTaskDto dto = new CreateTaskDto();
         dto.setCreatedBy(getUser().getUsername());
         dto.setProjectId(projectId);
@@ -91,7 +91,7 @@ public class Session {
         taskConnection.sendPostForProject(dto);
     }
 
-    public void createTaskForTask(long taskId, String title) throws Throwable {
+    public void createTaskForTask(long taskId, String title) throws InterruptedException, JSONException, HttpRequestFailedException, IOException {
         CreateTaskDto dto = new CreateTaskDto();
         dto.setCreatedBy(getUser().getUsername());
         dto.setTaskId(taskId);
@@ -103,7 +103,7 @@ public class Session {
         taskConnection.sendDelete(id);
     }
 
-    public void updateTask(UpdateTaskDto dto) throws Throwable {
+    public void updateTask(UpdateTaskDto dto) throws InterruptedException, JSONException, HttpRequestFailedException, IOException {
         dto.setUpdatorUsername(getUser().getUsername());
         taskConnection.sendUpdate(dto);
     }

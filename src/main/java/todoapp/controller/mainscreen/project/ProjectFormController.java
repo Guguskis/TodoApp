@@ -129,7 +129,7 @@ public class ProjectFormController implements Initializable {
         closeWindow();
     }
 
-    public void sendUpdate() throws Throwable {
+    public void sendUpdate() throws InterruptedException, JSONException, IOException {
         try {
             List<String> members = getMembersWithOwner();
             project.setMembers(members);
@@ -141,13 +141,13 @@ public class ProjectFormController implements Initializable {
         }
     }
 
-    private List<String> getMembersWithOwner() throws Throwable {
+    private List<String> getMembersWithOwner() throws DuplicateException, EmptyFieldException {
         List<String> members = getMembers();
         members.add(session.getUser().getUsername());
         return members;
     }
 
-    public void setUpdate(SimplifiedProjectDto project, Runnable updateParent) throws Throwable {
+    public void setUpdate(SimplifiedProjectDto project, Runnable updateParent) throws IOException {
         if (notOwner(project)) {
             setButtonsForReadOnly();
             makeFieldsUneditable();
@@ -171,7 +171,7 @@ public class ProjectFormController implements Initializable {
         ownerRow.setVisible(true);
     }
 
-    private boolean notOwner(SimplifiedProjectDto project) throws Throwable {
+    private boolean notOwner(SimplifiedProjectDto project) {
         return !project.getOwner().trim().equals(session.getUser().getUsername());
     }
 

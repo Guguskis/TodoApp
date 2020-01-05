@@ -45,13 +45,13 @@ public class JSONParser {
         return members;
     }
 
-    public User user(JSONObject json) throws Exception {
+    public User user(JSONObject json) throws JSONException {
         if (isCompany(json)) {
             return company(json);
         } else if (isPerson(json)) {
             return person(json);
         } else {
-            throw new Exception("Server and client types do not match.");
+            throw new JSONException("Server and client types do not match.");
         }
     }
 
@@ -161,7 +161,7 @@ public class JSONParser {
             JSONArray completedDateValues = json.getJSONArray("completedDate");
             task.setCompletedDate(getLocalDateTime(completedDateValues));
         } catch (JSONException ignored) {
-
+            // Do nothing if cannot parse
         }
 
         task.setTasks(getTasks(json.getJSONArray("tasks")));

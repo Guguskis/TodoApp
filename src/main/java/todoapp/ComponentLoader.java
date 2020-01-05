@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class ComponentLoader {
-    private static final String FXML_Extension = ".fxml";
+    private static final String FXML_EXTENSION = ".fxml";
 
     public Parent getComponent(String relativeFilePath) throws FileNotFoundException {
         String filePath = getFilePath(relativeFilePath);
@@ -15,15 +15,7 @@ public class ComponentLoader {
     }
 
     private String getFilePath(String relativeFilePath) {
-        return "view/" + relativeFilePath + FXML_Extension;
-    }
-
-    public Object getController(String relativeFilePath) throws IOException {
-        String filePath = getFilePath(relativeFilePath);
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(filePath));
-        loader.load();
-
-        return loader.getController();
+        return "view/" + relativeFilePath + FXML_EXTENSION;
     }
 
     private Parent handleLoading(String filePath) throws FileNotFoundException {
@@ -34,9 +26,8 @@ public class ComponentLoader {
         }
     }
 
-    public FXMLLoader getLoaderForComponent(String relativeFilePath) throws IOException {
+    public FXMLLoader getLoaderForComponent(String relativeFilePath) {
         String filePath = getFilePath(relativeFilePath);
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(filePath));
-        return loader;
+        return new FXMLLoader(getClass().getResource(filePath));
     }
 }

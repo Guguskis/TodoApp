@@ -57,7 +57,7 @@ public class ProjectContainerController implements Initializable {
             table.setItems(observableProjects);
         } catch (HttpRequestFailedException e) {
             triggerAlert(e.getMessage());
-        } catch (InterruptedException | JSONException | IOException e) {
+        } catch (InterruptedException | IOException | JSONException e) {
             e.printStackTrace();
         }
     }

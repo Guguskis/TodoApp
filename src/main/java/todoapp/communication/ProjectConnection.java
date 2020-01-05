@@ -61,40 +61,40 @@ public class ProjectConnection {
 
         if (response.statusCode() != 200) {
             parseAndThrowHttpRequestFailedException(response);
-            return;
         }
     }
 
     private HttpRequest createGetRequest(String endpoint) {
-        return newBuilder()
+        return getJSONRequest()
                 .GET()
                 .uri(URI.create(BASE_URL + endpoint))
-                .header("Content-Type", "application/json")
                 .build();
     }
 
     private HttpRequest createPostRequest(JSONObject body, String endpoint) {
-        return newBuilder()
+        return getJSONRequest()
                 .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
                 .uri(URI.create(BASE_URL + endpoint))
-                .header("Content-Type", "application/json")
                 .build();
     }
 
     private HttpRequest createDeleteRequest(long id) {
-        return newBuilder()
+        return getJSONRequest()
                 .DELETE()
                 .uri(URI.create(BASE_URL + id))
-                .header("Content-Type", "application/json")
                 .build();
     }
 
     private HttpRequest createPutRequest(JSONObject body) {
-        return newBuilder()
+        return getJSONRequest()
                 .PUT(HttpRequest.BodyPublishers.ofString(body.toString()))
                 .uri(URI.create(BASE_URL))
-                .header("Content-Type", "application/json")
                 .build();
+    }
+
+    private HttpRequest.Builder getJSONRequest() {
+        return newBuilder()
+                .header("Content-Type", "application/json");
     }
 
     private HttpResponse<String> send(HttpRequest request) throws IOException, InterruptedException {
