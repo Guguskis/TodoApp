@@ -1,5 +1,6 @@
 package main.java.todoapp.communication;
 
+import main.java.todoapp.controller.mainscreen.task.UpdateTaskDto;
 import main.java.todoapp.dto.CreateTaskDto;
 import main.java.todoapp.exceptions.HttpRequestFailedException;
 import main.java.todoapp.helper.JSONParser;
@@ -55,8 +56,7 @@ public class TaskConnection {
     }
 
     public void createForProject(CreateTaskDto task) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
-        JSONObject body = new JSONObject(task); // Todo Might need to parse manually
-        HttpRequest request = createPostRequest(body, "project");
+        HttpRequest request = createPostRequest(new JSONObject(task), "project");
         HttpResponse<String> response = send(request);
 
         if (response.statusCode() != 201) {
@@ -75,8 +75,7 @@ public class TaskConnection {
     }
 
     public void createForTask(CreateTaskDto dto) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
-        var body = new JSONObject(dto);// Todo same
-        HttpRequest request = createPostRequest(body, "");
+        HttpRequest request = createPostRequest(new JSONObject(dto), "");
         HttpResponse<String> response = send(request);
 
         if (response.statusCode() != 201) {
@@ -84,5 +83,44 @@ public class TaskConnection {
             String message = responseBodyJson.getString("message");
             throw new HttpRequestFailedException(message);
         }
+    }
+
+    public void delete(long id) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
+        HttpRequest request = createDeleteRequest("" + id);
+        HttpResponse<String> response = send(request);
+
+        if (response.statusCode() != 200) {
+            JSONObject responseBodyJson = new JSONObject(response.body());
+            String message = responseBodyJson.getString("message");
+            throw new HttpRequestFailedException(message);
+        }
+    }
+
+    private HttpRequest createDeleteRequest(String endpoint) {
+        return newBuilder()
+                .DELETE()
+                .uri(URI.create(BASE_URL + endpoint))
+                .header("Content-Type", "application/json")
+                .build();
+    }
+
+    public void update(UpdateTaskDto dto) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
+        HttpRequest request = createPutRequest(new JSONObject(dto));
+        HttpResponse<String> response = send(request);
+
+        if (response.statusCode() != 200) {
+            JSONObject responseBodyJson = new JSONObject(response.body());
+            String message = responseBodyJson.getString("message");
+            throw new HttpRequestFailedException(message);
+        }
+
+    }
+
+    private HttpRequest createPutRequest(JSONObject body) {
+        return newBuilder()
+                .PUT(HttpRequest.BodyPublishers.ofString(body.toString()))
+                .uri(URI.create(BASE_URL))
+                .header("Content-Type", "application/json")
+                .build();
     }
 }

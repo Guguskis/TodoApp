@@ -1,5 +1,6 @@
 package main.java.todoapp.communication;
 
+import main.java.todoapp.controller.mainscreen.task.UpdateTaskDto;
 import main.java.todoapp.dto.CreateTaskDto;
 import main.java.todoapp.dto.SimplifiedProjectDto;
 import main.java.todoapp.exceptions.HttpRequestFailedException;
@@ -94,5 +95,14 @@ public class Session {
         dto.setTaskId(taskId);
         dto.setTitle(title);
         taskConnection.createForTask(dto);
+    }
+
+    public void deleteTask(long id) throws InterruptedException, JSONException, HttpRequestFailedException, IOException {
+        taskConnection.delete(id);
+    }
+
+    public void updateTask(UpdateTaskDto dto) throws Throwable {
+        dto.setUpdatorUsername(getCurrentUser().getUsername());
+        taskConnection.update(dto);
     }
 }
