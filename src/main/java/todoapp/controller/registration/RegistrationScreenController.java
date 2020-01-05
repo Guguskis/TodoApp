@@ -8,7 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.Pane;
 import main.java.todoapp.ComponentLoader;
-import main.java.todoapp.JavaFxApplication;
+import main.java.todoapp.MainApplication;
 import main.java.todoapp.communication.Session;
 import main.java.todoapp.exceptions.EmptyFieldException;
 import main.java.todoapp.exceptions.InvalidTypeException;
@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 public class RegistrationScreenController implements Initializable {
     private final ComponentLoader loader = new ComponentLoader();
     private final Session session = Session.getInstance();
-    private final JavaFxApplication javaFxApplication = JavaFxApplication.getInstance();
+    private final MainApplication mainApplication = MainApplication.getInstance();
 
     private PersonFormController personController;
     private CompanyFormController companyController;
@@ -128,6 +128,6 @@ public class RegistrationScreenController implements Initializable {
     }
 
     private void goToLoginScreen() throws FileNotFoundException {
-        javaFxApplication.changeScene("LoginScreen");
+        mainApplication.changeScene("LoginScreen");
     }
 }

@@ -12,7 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import main.java.todoapp.ComponentLoader;
-import main.java.todoapp.JavaFxApplication;
+import main.java.todoapp.MainApplication;
 import main.java.todoapp.communication.Session;
 import main.java.todoapp.dto.SimplifiedProjectDto;
 import main.java.todoapp.exceptions.HttpRequestFailedException;
@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 public class ProjectContainerController implements Initializable {
     private final ComponentLoader loader = new ComponentLoader();
     private final Session session = Session.getInstance();
-    private final JavaFxApplication javaFxApplication = JavaFxApplication.getInstance();
+    private final MainApplication mainApplication = MainApplication.getInstance();
 
     @FXML
     public TableView table;
@@ -66,7 +66,7 @@ public class ProjectContainerController implements Initializable {
         FXMLLoader projectFormLoader = getFormLoader();
         Parent projectForm = projectFormLoader.load();
         ProjectFormController controller = projectFormLoader.getController();
-        Stage window = javaFxApplication.createWindow(projectForm, "Add project");
+        Stage window = mainApplication.createWindow(projectForm, "Add project");
         controller.setWindow(window);
         controller.setUpdateParent(this::fillData);
     }
@@ -83,7 +83,7 @@ public class ProjectContainerController implements Initializable {
         ProjectFormController controller = projectFormLoader.getController();
         controller.setUpdate(project, this::fillData);
 
-        Stage window = javaFxApplication.createWindow(projectForm, "Add project");
+        Stage window = mainApplication.createWindow(projectForm, "Add project");
         controller.setWindow(window);
     }
 

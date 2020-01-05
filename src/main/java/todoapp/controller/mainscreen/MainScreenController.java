@@ -5,7 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import main.java.todoapp.ComponentLoader;
-import main.java.todoapp.JavaFxApplication;
+import main.java.todoapp.MainApplication;
 import main.java.todoapp.communication.Session;
 
 import java.io.FileNotFoundException;
@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 
 public class MainScreenController implements Initializable {
     private final ComponentLoader loader = new ComponentLoader();
-    private final JavaFxApplication javaFxApplication = JavaFxApplication.getInstance();
+    private final MainApplication mainApplication = MainApplication.getInstance();
     private final Session session = Session.getInstance();
 
     @FXML
@@ -32,7 +32,7 @@ public class MainScreenController implements Initializable {
     @FXML
     public void logout() throws FileNotFoundException {
         session.logout();
-        javaFxApplication.changeScene("LoginScreen");
+        mainApplication.changeScene("LoginScreen");
     }
 
     public void openProjects() throws FileNotFoundException {

@@ -11,7 +11,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import main.java.todoapp.ComponentLoader;
-import main.java.todoapp.JavaFxApplication;
+import main.java.todoapp.MainApplication;
 import main.java.todoapp.communication.Session;
 import main.java.todoapp.dto.SimplifiedProjectDto;
 import main.java.todoapp.exceptions.HttpRequestFailedException;
@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 public class ProjectTasksContainerController implements Initializable {
     private final Session session = Session.getInstance();
     private final ComponentLoader loader = new ComponentLoader();
-    private final JavaFxApplication javaFxApplication = JavaFxApplication.getInstance();
+    private final MainApplication mainApplication = MainApplication.getInstance();
 
     @FXML
     public TableView table;
@@ -43,7 +43,7 @@ public class ProjectTasksContainerController implements Initializable {
 
             TaskContainerController controller = taskContainerLoader.getController();
             controller.setProject(getSelectedItem());
-            javaFxApplication.createWindow(tasksContainer, getSelectedItem().getName());
+            mainApplication.createWindow(tasksContainer, getSelectedItem().getName());
         } catch (HttpRequestFailedException e) {
             triggerAlert(e.getMessage());
         }

@@ -7,7 +7,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import main.java.todoapp.JavaFxApplication;
+import main.java.todoapp.MainApplication;
 import main.java.todoapp.communication.Session;
 
 import java.io.FileNotFoundException;
@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 
 public class LoginScreenController implements Initializable {
     private final Session session = Session.getInstance();
-    private final JavaFxApplication javaFxApplication = JavaFxApplication.getInstance();
+    private final MainApplication mainApplication = MainApplication.getInstance();
 
     @FXML
     private TextField usernameField;
@@ -41,7 +41,7 @@ public class LoginScreenController implements Initializable {
     }
 
     private void goToMainScreen() throws FileNotFoundException {
-        javaFxApplication.changeScene("MainScreen/MainScreen");
+        mainApplication.changeScene("MainScreen/MainScreen");
     }
 
     private boolean usernameOrPasswordEmpty() {
@@ -69,7 +69,7 @@ public class LoginScreenController implements Initializable {
     }
 
     public void startRegistration() throws FileNotFoundException {
-        javaFxApplication.changeScene("registration/RegistrationScreen");
+        mainApplication.changeScene("registration/RegistrationScreen");
 
     }
 

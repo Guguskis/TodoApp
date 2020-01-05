@@ -9,9 +9,9 @@ import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 
-public class JavaFxApplication extends Application {
+public class MainApplication extends Application {
 
-    private static JavaFxApplication instance;
+    private static MainApplication instance;
 
     private static final int SCREEN_WIDTH = 800;
     private static final int SCREEN_HEIGHT = 600;
@@ -23,7 +23,7 @@ public class JavaFxApplication extends Application {
         launch(args);
     }
 
-    public static JavaFxApplication getInstance() {
+    public static MainApplication getInstance() {
         return instance;
     }
 

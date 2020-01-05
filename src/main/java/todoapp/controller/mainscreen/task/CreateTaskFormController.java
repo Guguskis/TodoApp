@@ -47,7 +47,7 @@ public class CreateTaskFormController implements Initializable {
     public void createTask() throws Throwable {
         try {
             if (projectId != 0) {
-                session.createProjectTask(projectId, title.getText());
+                session.createTaskForProject(projectId, title.getText());
             } else {
                 session.createTask(parentTaskId, title.getText());
             }

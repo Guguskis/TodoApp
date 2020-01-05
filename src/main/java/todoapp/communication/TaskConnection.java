@@ -42,7 +42,7 @@ public class TaskConnection {
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    public List<Task> get(long projectId) throws IOException, InterruptedException, JSONException, HttpRequestFailedException {
+    public List<Task> getTasks(long projectId) throws IOException, InterruptedException, JSONException, HttpRequestFailedException {
         HttpRequest request = createGetRequest("" + projectId);
         HttpResponse<String> response = send(request);
 

@@ -9,7 +9,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import main.java.todoapp.ComponentLoader;
-import main.java.todoapp.JavaFxApplication;
+import main.java.todoapp.MainApplication;
 import main.java.todoapp.communication.Session;
 import main.java.todoapp.exceptions.HttpRequestFailedException;
 import main.java.todoapp.model.Task;
@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 
 public class UpdateTaskFormController implements Initializable {
     private final ComponentLoader loader = new ComponentLoader();
-    private final JavaFxApplication javaFxApplication = JavaFxApplication.getInstance();
+    private final MainApplication mainApplication = MainApplication.getInstance();
     private final Session session = Session.getInstance();
 
     @FXML
@@ -39,7 +39,7 @@ public class UpdateTaskFormController implements Initializable {
 
     }
 
-    public void set(Runnable fillData, Stage window, Task selected, Task parent) {
+    public void set(Runnable fillData, Stage window, Task selected) {
         this.fillData = fillData;
         this.window = window;
         this.task = selected;
@@ -59,7 +59,7 @@ public class UpdateTaskFormController implements Initializable {
         Parent form = taskFormLoader.load();
 
         CreateTaskFormController controller = taskFormLoader.getController();
-        Stage window = javaFxApplication.createWindow(form, "Create task form");
+        Stage window = mainApplication.createWindow(form, "Create task form");
         controller.setTask(fillData, window, task.getId());
     }
 

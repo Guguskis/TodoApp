@@ -78,10 +78,10 @@ public class Session {
     }
 
     public List<Task> getTasks(long projectId) throws IOException, InterruptedException, JSONException, HttpRequestFailedException {
-        return taskConnection.get(projectId);
+        return taskConnection.getTasks(projectId);
     }
 
-    public void createProjectTask(long projectId, String title) throws Throwable {
+    public void createTaskForProject(long projectId, String title) throws Throwable {
         CreateTaskDto dto = new CreateTaskDto();
         dto.setCreatedBy(getCurrentUser().getUsername());
         dto.setProjectId(projectId);
