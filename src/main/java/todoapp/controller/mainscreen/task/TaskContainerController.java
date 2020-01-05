@@ -84,13 +84,13 @@ public class TaskContainerController implements Initializable {
     }
 
     private void openUpdateForm(Task selected, Task parent) throws IOException {
-        FXMLLoader taskFormLoader = loader.getLoaderForComponent("mainscreen/task/TaskForm");
+        FXMLLoader taskFormLoader = loader.getLoaderForComponent("mainscreen/task/UpdateTaskForm");
 
         Parent form = taskFormLoader.load();
 
-        TaskFormController controller = taskFormLoader.getController();
+        UpdateTaskFormController controller = taskFormLoader.getController();
         Stage window = javaFxApplication.createWindow(form, "Task form");
-        controller.setUpdate(this::fillData, window, selected, parent);
+        controller.set(this::fillData, window, selected, parent);
     }
 
     public void setProject(SimplifiedProjectDto project) throws InterruptedException, HttpRequestFailedException, JSONException, IOException {
@@ -100,5 +100,15 @@ public class TaskContainerController implements Initializable {
         this.project.setTasks(tasks);
 
         fillData();
+    }
+
+    public void openCreateTaskForm() throws IOException {
+        FXMLLoader taskFormLoader = loader.getLoaderForComponent("mainscreen/task/CreateTaskForm");
+
+        Parent form = taskFormLoader.load();
+
+        CreateTaskFormController controller = taskFormLoader.getController();
+        Stage window = javaFxApplication.createWindow(form, "Create task form");
+        controller.set(this::fillData, window, project.getId());
     }
 }
