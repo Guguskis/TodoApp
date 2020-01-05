@@ -1,5 +1,6 @@
 package main.java.todoapp.communication;
 
+import main.java.todoapp.dto.CreateTaskDto;
 import main.java.todoapp.exceptions.HttpRequestFailedException;
 import main.java.todoapp.helper.JSONParser;
 import main.java.todoapp.model.Task;
@@ -51,5 +52,37 @@ public class TaskConnection {
         }
 
         return parser.getTasks(new JSONArray(response.body()));
+    }
+
+    public void createForProject(CreateTaskDto task) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
+        JSONObject body = new JSONObject(task); // Todo Might need to parse manually
+        HttpRequest request = createPostRequest(body, "project");
+        HttpResponse<String> response = send(request);
+
+        if (response.statusCode() != 201) {
+            JSONObject responseBodyJson = new JSONObject(response.body());
+            String message = responseBodyJson.getString("message");
+            throw new HttpRequestFailedException(message);
+        }
+    }
+
+    private HttpRequest createPostRequest(JSONObject body, String endpoint) {
+        return newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
+                .uri(URI.create(BASE_URL + endpoint))
+                .header("Content-Type", "application/json")
+                .build();
+    }
+
+    public void createForTask(CreateTaskDto dto) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
+        var body = new JSONObject(dto);// Todo same
+        HttpRequest request = createPostRequest(body, "");
+        HttpResponse<String> response = send(request);
+
+        if (response.statusCode() != 201) {
+            JSONObject responseBodyJson = new JSONObject(response.body());
+            String message = responseBodyJson.getString("message");
+            throw new HttpRequestFailedException(message);
+        }
     }
 }

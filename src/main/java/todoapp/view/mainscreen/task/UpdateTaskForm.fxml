@@ -12,6 +12,7 @@
         <HBox alignment="CENTER" spacing="30.0">
             <children>
                 <Button mnemonicParsing="false" onAction="#closeForm" text="Cancel"/>
+                <Button mnemonicParsing="false" onAction="#openCreateTaskForm" text="Create task"/>
                 <Button mnemonicParsing="false" text="Update"/>
             </children>
         </HBox>

@@ -1,5 +1,6 @@
 package main.java.todoapp.communication;
 
+import main.java.todoapp.dto.CreateTaskDto;
 import main.java.todoapp.dto.SimplifiedProjectDto;
 import main.java.todoapp.exceptions.HttpRequestFailedException;
 import main.java.todoapp.exceptions.RegistrationFailedException;
@@ -77,5 +78,21 @@ public class Session {
 
     public List<Task> getTasks(long projectId) throws IOException, InterruptedException, JSONException, HttpRequestFailedException {
         return taskConnection.get(projectId);
+    }
+
+    public void createProjectTask(long projectId, String title) throws Throwable {
+        CreateTaskDto dto = new CreateTaskDto();
+        dto.setCreatedBy(getCurrentUser().getUsername());
+        dto.setProjectId(projectId);
+        dto.setTitle(title);
+        taskConnection.createForProject(dto);
+    }
+
+    public void createTask(long taskId, String title) throws Throwable {
+        CreateTaskDto dto = new CreateTaskDto();
+        dto.setCreatedBy(getCurrentUser().getUsername());
+        dto.setTaskId(taskId);
+        dto.setTitle(title);
+        taskConnection.createForTask(dto);
     }
 }

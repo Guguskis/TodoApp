@@ -78,7 +78,6 @@ public class TaskContainerController implements Initializable {
         Task parent = null;
         if (treeItem.getParent() != null) {
             parent = treeItem.getParent().getValue();
-            System.out.println("parent = " + parent);
         }
         return parent;
     }
@@ -109,6 +108,8 @@ public class TaskContainerController implements Initializable {
 
         CreateTaskFormController controller = taskFormLoader.getController();
         Stage window = javaFxApplication.createWindow(form, "Create task form");
-        controller.set(this::fillData, window, project.getId());
+
+        // Fixme fillData is null inside of setProject
+        controller.setProject(this::fillData, window, project.getId());
     }
 }
