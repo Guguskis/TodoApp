@@ -9,43 +9,35 @@ import javafx.scene.control.TreeView;
 import javafx.stage.Stage;
 import main.java.todoapp.ComponentLoader;
 import main.java.todoapp.JavaFxApplication;
+import main.java.todoapp.communication.Session;
+import main.java.todoapp.dto.SimplifiedProjectDto;
+import main.java.todoapp.exceptions.HttpRequestFailedException;
 import main.java.todoapp.model.Project;
 import main.java.todoapp.model.Task;
+import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class TaskContainerController implements Initializable {
     private final ComponentLoader loader = new ComponentLoader();
     private final JavaFxApplication javaFxApplication = JavaFxApplication.getInstance();
+    private final Session session = Session.getInstance();
 
     @FXML
     public TreeView<Task> table;
+    private Project project = new Project();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        fillData();
         table.setEditable(true);
+        table.setShowRoot(false);
+        fillData();
     }
 
     private void fillData() {
-        Project project = new Project();
-
-        Task taskA = new Task("Blaze", "Guguskis");
-        Task taskB = new Task("Shingel", "Matas");
-        Task taskAA = new Task("Ruck and Snorty", "Guguskis");
-        Task taskAB = new Task("Gibberish", "admin");
-        taskAB.setCompleted("admin");
-
-        taskA.getTasks().add(taskAA);
-        taskA.getTasks().add(taskAB);
-
-        project.getTasks().add(taskA);
-        project.getTasks().add(taskB);
-
-        // Todo be careful because root might not be visible
-        table.setShowRoot(false);
         table.setRoot(getTreeItem(project));
     }
 
@@ -101,4 +93,12 @@ public class TaskContainerController implements Initializable {
         controller.setUpdate(this::fillData, window, selected, parent);
     }
 
+    public void setProject(SimplifiedProjectDto project) throws InterruptedException, HttpRequestFailedException, JSONException, IOException {
+        List<Task> tasks = session.getTasks(project.getId());
+        this.project.setId(project.getId());
+        this.project.setName(project.getName());
+        this.project.setTasks(tasks);
+
+        fillData();
+    }
 }

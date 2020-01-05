@@ -18,6 +18,9 @@ public class Task {
 
     private List<Task> tasks = new ArrayList<>();
 
+    public Task() {
+
+    }
 
     public Task(String title, String creator) {
         this.title = title;
@@ -29,16 +32,8 @@ public class Task {
         return completed;
     }
 
-    public void setCompleted(String completedBy) {
-        this.completed = true;
-        this.completedBy = completedBy;
-        this.setCompletedDate(LocalDateTime.now());
-    }
-
-    public void setIncomplete() {
-        completed = false;
-        completedBy = "";
-        completedDate = null;
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 
     public String getDurationAfterCompletion() {

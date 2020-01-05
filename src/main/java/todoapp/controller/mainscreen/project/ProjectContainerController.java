@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -54,9 +55,9 @@ public class ProjectContainerController implements Initializable {
             List<SimplifiedProjectDto> projects = session.getProjects();
             ObservableList<SimplifiedProjectDto> observableProjects = FXCollections.observableArrayList(projects);
             table.setItems(observableProjects);
-        } catch (InterruptedException | JSONException | IOException e) {
-            e.printStackTrace();
         } catch (HttpRequestFailedException e) {
+            triggerAlert(e.getMessage());
+        } catch (InterruptedException | JSONException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -90,4 +91,11 @@ public class ProjectContainerController implements Initializable {
         return (SimplifiedProjectDto) table.getSelectionModel().getSelectedItem();
     }
 
+    private void triggerAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }

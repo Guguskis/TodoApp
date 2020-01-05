@@ -6,6 +6,7 @@ import main.java.todoapp.exceptions.RegistrationFailedException;
 import main.java.todoapp.helper.JSONParser;
 import main.java.todoapp.model.Company;
 import main.java.todoapp.model.Person;
+import main.java.todoapp.model.Task;
 import main.java.todoapp.model.User;
 import org.json.JSONException;
 
@@ -16,6 +17,7 @@ public class Session {
     private static Session instance;
     private final UserConnection userConnection = new UserConnection(new JSONParser());
     private final ProjectConnection projectConnection = new ProjectConnection(new JSONParser());
+    private final TaskConnection taskConnection = new TaskConnection(new JSONParser());
 
     private User currentUser;
 
@@ -71,5 +73,9 @@ public class Session {
 
     public void logout() {
         currentUser = null;
+    }
+
+    public List<Task> getTasks(long projectId) throws IOException, InterruptedException, JSONException, HttpRequestFailedException {
+        return taskConnection.get(projectId);
     }
 }

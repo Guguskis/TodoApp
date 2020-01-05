@@ -3,11 +3,13 @@ package main.java.todoapp.helper;
 import main.java.todoapp.dto.SimplifiedProjectDto;
 import main.java.todoapp.model.Company;
 import main.java.todoapp.model.Person;
+import main.java.todoapp.model.Task;
 import main.java.todoapp.model.User;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,25 +31,6 @@ public class JSONParser {
         json.put("ownerUsername", project.getOwner());
         json.put("members", project.getMembers());
         return json;
-    }
-
-    public List<SimplifiedProjectDto> simplifiedProjectsDto(JSONArray jsonArray) throws JSONException {
-        List<SimplifiedProjectDto> projects = new ArrayList<>();
-        for (int i = 0; i < jsonArray.length(); i++) {
-            JSONObject json = (JSONObject) jsonArray.get(i);
-            projects.add(simplifiedProjectDto(json));
-        }
-        return projects;
-    }
-
-    private SimplifiedProjectDto simplifiedProjectDto(JSONObject json) throws JSONException {
-        SimplifiedProjectDto project = new SimplifiedProjectDto();
-        project.setId(json.getLong("id"));
-        project.setName(json.getString("name"));
-        project.setOwner(json.getString("owner"));
-        List<String> members = getMembers(json);
-        project.setMembers(members);
-        return project;
     }
 
     private List<String> getMembers(JSONObject json) throws JSONException {
@@ -131,5 +114,67 @@ public class JSONParser {
             e.printStackTrace();
         }
         return companyJson;
+    }
+
+    public List<SimplifiedProjectDto> simplifiedProjectsDto(JSONArray jsonArray) throws JSONException {
+        List<SimplifiedProjectDto> projects = new ArrayList<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject json = (JSONObject) jsonArray.get(i);
+            projects.add(simplifiedProjectDto(json));
+        }
+        return projects;
+    }
+
+    private SimplifiedProjectDto simplifiedProjectDto(JSONObject json) throws JSONException {
+        SimplifiedProjectDto project = new SimplifiedProjectDto();
+        project.setId(json.getLong("id"));
+        project.setName(json.getString("name"));
+        project.setOwner(json.getString("owner"));
+        List<String> members = getMembers(json);
+        project.setMembers(members);
+        return project;
+    }
+
+    public List<Task> getTasks(JSONArray jsonArray) throws JSONException {
+        List<Task> tasks = new ArrayList<>();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject json = (JSONObject) jsonArray.get(i);
+            tasks.add(getTask(json));
+        }
+
+        return tasks;
+    }
+
+    private Task getTask(JSONObject json) throws JSONException {
+        Task task = new Task();
+        task.setId(json.getLong("id"));
+        task.setTitle(json.getString("title"));
+        task.setCompleted(json.getBoolean("completed"));
+        task.setCreatedBy(json.getString("createdBy"));
+        task.setCompletedBy(json.getString("completedBy"));
+
+        JSONArray createdDateValues = json.getJSONArray("createdDate");
+        task.setCreatedDate(getLocalDateTime(createdDateValues));
+
+        try {
+            JSONArray completedDateValues = json.getJSONArray("completedDate");
+            task.setCompletedDate(getLocalDateTime(completedDateValues));
+        } catch (JSONException ignored) {
+
+        }
+
+        task.setTasks(getTasks(json.getJSONArray("tasks")));
+
+        return task;
+    }
+
+    private LocalDateTime getLocalDateTime(JSONArray dateValues) throws JSONException {
+        return LocalDateTime.of(
+                dateValues.getInt(0)
+                , dateValues.getInt(1)
+                , dateValues.getInt(2)
+                , dateValues.getInt(3)
+                , dateValues.getInt(4));
     }
 }

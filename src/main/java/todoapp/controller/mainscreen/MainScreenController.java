@@ -35,17 +35,23 @@ public class MainScreenController implements Initializable {
         javaFxApplication.changeScene("LoginScreen");
     }
 
-
     public void openProjects() throws FileNotFoundException {
         Parent projectContainer = loader.getComponent("mainscreen/project/ProjectContainer");
-        middlePane.getChildren().clear();
-        middlePane.getChildren().add(projectContainer);
+        setMiddlePane(projectContainer);
     }
 
     public void openAccountSettings() throws FileNotFoundException {
         Parent accountSettingsContainer = loader.getComponent("mainscreen/AccountSettingsContainer");
-        middlePane.getChildren().clear();
-        middlePane.getChildren().add(accountSettingsContainer);
+        setMiddlePane(accountSettingsContainer);
     }
 
+    public void openTasks() throws FileNotFoundException {
+        Parent projectTasksContainer = loader.getComponent("mainscreen/task/ProjectTasksContainer");
+        setMiddlePane(projectTasksContainer);
+    }
+
+    private void setMiddlePane(Parent component) {
+        middlePane.getChildren().clear();
+        middlePane.getChildren().add(component);
+    }
 }

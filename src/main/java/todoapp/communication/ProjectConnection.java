@@ -1,6 +1,5 @@
 package main.java.todoapp.communication;
 
-import javafx.scene.control.Alert;
 import main.java.todoapp.dto.SimplifiedProjectDto;
 import main.java.todoapp.exceptions.HttpRequestFailedException;
 import main.java.todoapp.helper.JSONParser;
@@ -68,14 +67,6 @@ public class ProjectConnection {
                 .uri(URI.create(BASE_URL + endpoint))
                 .header("Content-Type", "application/json")
                 .build();
-    }
-
-    private void triggerAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     public void delete(long id) throws IOException, InterruptedException {

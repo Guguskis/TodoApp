@@ -12,6 +12,7 @@
         <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
             <Button fx:id="projectsMenuButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
                     mnemonicParsing="false" onAction="#openProjects" prefWidth="100.0" text="Projects"/>
+            <Button mnemonicParsing="false" onAction="#openTasks" prefWidth="100.0" text="Tasks"/>
             <Button layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false"
                     onAction="#openAccountSettings" text="Account"/>
         </VBox>

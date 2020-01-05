@@ -1,10 +1,7 @@
 package main.java.todoapp.model;
 
-import main.java.todoapp.exceptions.DuplicateException;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Project {
 
@@ -16,10 +13,6 @@ public class Project {
 
     public Project() {
 
-    }
-
-    public Project(String name) {
-        this.name = name;
     }
 
     public long getId() {
@@ -47,51 +40,17 @@ public class Project {
         members.add(owner);
     }
 
-    public List<User> getMembers() {
-        return members;
-    }
-	
-	public void addMember(User whoIsAdding, User userToAdd) throws Exception {
-        if (members.contains(userToAdd)) {
-            throw new DuplicateException("User " + userToAdd + " already exists.");
-
-        } else if (this.owner != whoIsAdding) {
-            throw new Exception("User " + whoIsAdding.getUsername() + " cannot add another member, because he is not project owner.");
-        } else {
-            members.add(userToAdd);
-            userToAdd.assignProject(this);
-        }
-    }
-
-    public void removeMember(User user) {
-        if (user.equals(owner)) {
-            return;
-        }
-        members.remove(user);
-    }
-
     public List<Task> getTasks() {
         return tasks;
     }
 
-    public void addTask(Task task) throws DuplicateException {
-        List<Task> duplicate = tasks.stream()
-                .filter(t -> t.getTitle().equals(task.getTitle()))
-                .collect(Collectors.toList());
-        if (!duplicate.isEmpty()) {
-            throw new DuplicateException("Task \"" + task.getTitle() + "\" already exists.");
-        }
-
-        tasks.add(task);
-    }
-
-    public void removeTask(Task taskToRemove) {
-        tasks.removeIf(task -> task.equals(taskToRemove));
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
     @Override
     public String toString() {
-	    StringBuilder projectText = new StringBuilder("Project \"" + name + "\" with owner " + owner.getUsername() + ".\nMembers:");
+        StringBuilder projectText = new StringBuilder("Project \"" + name + "\" with owner " + owner.getUsername() + ".\nMembers:");
         for (User member : members) {
             projectText.append("\n\t").append(member);
         }
@@ -113,13 +72,6 @@ public class Project {
         if (project == null) {
             return false;
         } else return ((Project) project).getName().equals(name) && ((Project) project).getOwner().equals(owner);
-    }
-
-    public boolean isOwner(User user) {
-        if (owner != null) {
-            return owner.equals(user);
-        }
-        return false;
     }
 
 }
