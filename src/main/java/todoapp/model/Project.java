@@ -76,10 +76,10 @@ public class Project {
 
     public void addTask(Task task) throws DuplicateException {
         List<Task> duplicate = tasks.stream()
-                .filter(t -> t.getName().equals(task.getName()))
+                .filter(t -> t.getTitle().equals(task.getTitle()))
                 .collect(Collectors.toList());
         if (!duplicate.isEmpty()) {
-            throw new DuplicateException("Task \"" + task.getName() + "\" already exists.");
+            throw new DuplicateException("Task \"" + task.getTitle() + "\" already exists.");
         }
 
         tasks.add(task);

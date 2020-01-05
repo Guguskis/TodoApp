@@ -37,8 +37,9 @@ public class JavaFxApplication extends Application {
     public void start(Stage window) throws FileNotFoundException {
         this.primaryWindow = window;
         window.setTitle("ToDo App");
-        changeScene("LoginScreen");
-
+//        changeScene("LoginScreen");
+        //Todo change back
+        changeScene("mainscreen/task/TaskContainer");
         window.show();
     }
 

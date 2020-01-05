@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.TreeView?>
+<TreeView fx:id="table" onEditStart="#editStart" prefHeight="200.0" prefWidth="200.0"
+          xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="main.java.todoapp.controller.mainscreen.task.TaskContainerController"/>
