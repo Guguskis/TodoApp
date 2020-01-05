@@ -17,11 +17,12 @@ import java.util.List;
 
 public class Session {
     private static Session instance;
-    private final UserConnection userConnection = new UserConnection(new JSONParser());
-    private final ProjectConnection projectConnection = new ProjectConnection(new JSONParser());
-    private final TaskConnection taskConnection = new TaskConnection(new JSONParser());
 
-    private User currentUser;
+    private final UserConnection userConnection;
+    private final ProjectConnection projectConnection;
+    private final TaskConnection taskConnection;
+
+    private User user;
 
     public static Session getInstance() {
         if (instance == null) {
@@ -30,51 +31,52 @@ public class Session {
         return instance;
     }
 
+    public Session() {
+        userConnection = new UserConnection(new JSONParser());
+        projectConnection = new ProjectConnection(new JSONParser());
+        taskConnection = new TaskConnection(new JSONParser());
+    }
+
     public boolean verify(String username, String password) throws Throwable {
-        boolean verified = userConnection.verify(username, password);
+        boolean verified = userConnection.sendVerify(username, password);
         if (verified) {
-            currentUser = userConnection.getUserInfo(username);
+            user = userConnection.sendGet(username);
         }
         return verified;
     }
 
     public void register(Person person) throws InterruptedException, IOException, RegistrationFailedException {
-        userConnection.register(person);
+        userConnection.sendPost(person);
     }
 
     public void register(Company company) throws InterruptedException, RegistrationFailedException, IOException {
-        userConnection.register(company);
+        userConnection.sendPost(company);
     }
 
-    public User getCurrentUser() throws Throwable {
-        return userConnection.getUserInfo(currentUser.getUsername());
+    public User getUser() {
+        return user;
     }
 
     public void updateUserInformation(User user) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
-        user.setId(currentUser.getId());
-
-        userConnection.updateUserInformation(user);
-        currentUser = user;
+        user.setId(this.user.getId());
+        userConnection.sendPut(user);
+        this.user = user;
     }
 
     public List<SimplifiedProjectDto> getProjects() throws InterruptedException, JSONException, HttpRequestFailedException, IOException {
-        return projectConnection.getProjects(currentUser.getUsername());
+        return projectConnection.sendGet(user.getUsername());
     }
 
     public void createProject(List<String> usernames, String name) throws InterruptedException, IOException, JSONException, HttpRequestFailedException {
-        projectConnection.create(currentUser.getUsername(), usernames, name);
+        projectConnection.sendPost(user.getUsername(), usernames, name);
     }
 
     public void deleteProject(long id) throws IOException, InterruptedException {
-        projectConnection.delete(id);
+        projectConnection.sendDelete(id);
     }
 
     public void updateProject(SimplifiedProjectDto project) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
-        projectConnection.update(project);
-    }
-
-    public void logout() {
-        currentUser = null;
+        projectConnection.sendPut(project);
     }
 
     public List<Task> getTasks(long projectId) throws IOException, InterruptedException, JSONException, HttpRequestFailedException {
@@ -83,15 +85,15 @@ public class Session {
 
     public void createTaskForProject(long projectId, String title) throws Throwable {
         CreateTaskDto dto = new CreateTaskDto();
-        dto.setCreatedBy(getCurrentUser().getUsername());
+        dto.setCreatedBy(getUser().getUsername());
         dto.setProjectId(projectId);
         dto.setTitle(title);
         taskConnection.sendPostForProject(dto);
     }
 
-    public void createTask(long taskId, String title) throws Throwable {
+    public void createTaskForTask(long taskId, String title) throws Throwable {
         CreateTaskDto dto = new CreateTaskDto();
-        dto.setCreatedBy(getCurrentUser().getUsername());
+        dto.setCreatedBy(getUser().getUsername());
         dto.setTaskId(taskId);
         dto.setTitle(title);
         taskConnection.sendPostForTask(dto);
@@ -102,7 +104,11 @@ public class Session {
     }
 
     public void updateTask(UpdateTaskDto dto) throws Throwable {
-        dto.setUpdatorUsername(getCurrentUser().getUsername());
+        dto.setUpdatorUsername(getUser().getUsername());
         taskConnection.sendUpdate(dto);
+    }
+
+    public void logout() {
+        user = null;
     }
 }

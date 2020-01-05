@@ -99,8 +99,6 @@ public class TaskContainerController implements Initializable {
 
         CreateTaskFormController controller = taskFormLoader.getController();
         Stage window = mainApplication.createWindow(form, "Create task form");
-
-        // Fixme fillData is null inside of setProject
         controller.setProject(this::refreshData, window, project.getId());
     }
 }

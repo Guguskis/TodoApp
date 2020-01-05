@@ -43,7 +43,7 @@ public class AccountSettingsContainerController implements Initializable {
     }
 
     private void loadUserInformation() throws Throwable {
-        currentUser = session.getCurrentUser();
+        currentUser = session.getUser();
 
         if (currentUser instanceof Person) {
             loadAndFillPersonForm((Person) currentUser);

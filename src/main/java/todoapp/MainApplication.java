@@ -38,8 +38,6 @@ public class MainApplication extends Application {
         this.primaryWindow = window;
         window.setTitle("ToDo App");
         changeScene("LoginScreen");
-//        Todo change back
-//        changeScene("mainscreen/task/TaskContainer");
         window.show();
     }
 

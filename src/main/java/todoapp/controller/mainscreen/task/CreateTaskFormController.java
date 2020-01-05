@@ -49,7 +49,7 @@ public class CreateTaskFormController implements Initializable {
             if (projectId != 0) {
                 session.createTaskForProject(projectId, title.getText());
             } else {
-                session.createTask(parentTaskId, title.getText());
+                session.createTaskForTask(parentTaskId, title.getText());
             }
         } catch (HttpRequestFailedException e) {
             triggerAlert(e.getMessage());

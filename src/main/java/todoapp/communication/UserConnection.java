@@ -18,29 +18,37 @@ import java.net.http.HttpResponse;
 import static java.net.http.HttpRequest.newBuilder;
 import static java.net.http.HttpResponse.BodyHandlers;
 
-/*
- * example
- * https://www.mkyong.com/java/how-to-send-http-request-getpost-in-java/
- * */
 public class UserConnection {
     private final String BASE_URL = "http://localhost:8082/api/user/";
-    private final HttpClient httpClient = HttpClient.newBuilder()
-            .version(HttpClient.Version.HTTP_2)
-            .build();
+    private final HttpClient httpClient;
     private JSONParser parser;
 
     public UserConnection(JSONParser parser) {
         this.parser = parser;
+        httpClient = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_2)
+                .build();
     }
 
-    public boolean verify(String username, String password) throws IOException, InterruptedException {
+    public boolean sendVerify(String username, String password) throws IOException, InterruptedException {
         JSONObject userJson = parser.parse(new User(username, password));
         HttpRequest request = createPostRequest(userJson, "verify");
         HttpResponse<String> response = send(request);
         return response.body().equals("true");
     }
 
-    public void register(Company company) throws IOException, InterruptedException, RegistrationFailedException {
+    public User sendGet(String username) throws Throwable {
+        HttpRequest request = createGetRequest(username);
+        HttpResponse<String> response = send(request);
+
+        if (response.statusCode() != 200) {
+            return parseAndThrowHttpRequestFailedException(response);
+        }
+
+        return parser.user(new JSONObject(response.body()));
+    }
+
+    public void sendPost(Company company) throws IOException, InterruptedException, RegistrationFailedException {
         HttpRequest request = createPostRequest(parser.getCompanyJson(company), "/company");
         HttpResponse<String> response = send(request);
 
@@ -49,7 +57,7 @@ public class UserConnection {
         }
     }
 
-    public void register(Person person) throws RegistrationFailedException, IOException, InterruptedException {
+    public void sendPost(Person person) throws RegistrationFailedException, IOException, InterruptedException {
         HttpRequest request = createPostRequest(parser.getPersonJson(person), "/person");
         HttpResponse<String> response = send(request);
 
@@ -58,20 +66,7 @@ public class UserConnection {
         }
     }
 
-    public User getUserInfo(String username) throws Throwable {
-        HttpRequest request = createGetRequest(username);
-        HttpResponse<String> response = send(request);
-
-        if (response.statusCode() != 200) {
-            JSONObject responseBodyJson = new JSONObject(response.body());
-            String message = responseBodyJson.getString("message");
-            throw new HttpRequestFailedException(message);
-        }
-
-        return parser.user(new JSONObject(response.body()));
-    }
-
-    public void updateUserInformation(User user) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
+    public void sendPut(User user) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
         JSONObject json;
         String endpoint;
         if (user instanceof Person) {
@@ -86,9 +81,7 @@ public class UserConnection {
         HttpResponse<String> response = send(request);
 
         if (response.statusCode() != 200) {
-            JSONObject responseBodyJson = new JSONObject(response.body());
-            String message = responseBodyJson.getString("message");
-            throw new HttpRequestFailedException(message);
+            parseAndThrowHttpRequestFailedException(response);
         }
     }
 
@@ -108,16 +101,22 @@ public class UserConnection {
                 .build();
     }
 
-    private HttpResponse<String> send(HttpRequest request) throws IOException, InterruptedException {
-        return httpClient.send(request, BodyHandlers.ofString());
-    }
-
     private HttpRequest createPostRequest(JSONObject body, String endpoint) {
         return newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
                 .uri(URI.create(BASE_URL + endpoint))
                 .header("Content-Type", "application/json")
                 .build();
+    }
+
+    private HttpResponse<String> send(HttpRequest request) throws IOException, InterruptedException {
+        return httpClient.send(request, BodyHandlers.ofString());
+    }
+
+    private User parseAndThrowHttpRequestFailedException(HttpResponse<String> response) throws JSONException, HttpRequestFailedException {
+        JSONObject responseBodyJson = new JSONObject(response.body());
+        String message = responseBodyJson.getString("message");
+        throw new HttpRequestFailedException(message);
     }
 
 }

@@ -143,7 +143,7 @@ public class ProjectFormController implements Initializable {
 
     private List<String> getMembersWithOwner() throws Throwable {
         List<String> members = getMembers();
-        members.add(session.getCurrentUser().getUsername());
+        members.add(session.getUser().getUsername());
         return members;
     }
 
@@ -172,7 +172,7 @@ public class ProjectFormController implements Initializable {
     }
 
     private boolean notOwner(SimplifiedProjectDto project) throws Throwable {
-        return !project.getOwner().trim().equals(session.getCurrentUser().getUsername());
+        return !project.getOwner().trim().equals(session.getUser().getUsername());
     }
 
     private void setButtonsForUpdate() {

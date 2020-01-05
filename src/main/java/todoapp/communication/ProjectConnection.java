@@ -18,23 +18,51 @@ import static java.net.http.HttpRequest.newBuilder;
 
 public class ProjectConnection {
     private final String BASE_URL = "http://localhost:8082/api/project/";
-    private final HttpClient httpClient = HttpClient.newBuilder()
-            .version(HttpClient.Version.HTTP_2)
-            .build();
+
+    private final HttpClient httpClient;
     private final JSONParser parser;
 
     public ProjectConnection(JSONParser parser) {
         this.parser = parser;
+        httpClient = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_2)
+                .build();
     }
 
-    public List<SimplifiedProjectDto> getProjects(String username) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
+    public List<SimplifiedProjectDto> sendGet(String username) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
         HttpRequest request = createGetRequest(username);
         HttpResponse<String> response = send(request);
 
         if (response.statusCode() != 200) {
-            throw new HttpRequestFailedException("Failed to get project list");
+            parseAndThrowHttpRequestFailedException(response);
         }
+
         return parser.simplifiedProjectsDto(new JSONArray(response.body()));
+    }
+
+    public void sendPost(String owner, List<String> usernames, String name) throws JSONException, IOException, InterruptedException, HttpRequestFailedException {
+        SimplifiedProjectDto project = new SimplifiedProjectDto(name, owner, usernames);
+        HttpRequest request = createPostRequest(parser.parse(project), "");
+        HttpResponse<String> response = send(request);
+
+        if (response.statusCode() != 201) {
+            parseAndThrowHttpRequestFailedException(response);
+        }
+    }
+
+    public void sendDelete(long id) throws IOException, InterruptedException {
+        HttpRequest request = createDeleteRequest(id);
+        send(request);
+    }
+
+    public void sendPut(SimplifiedProjectDto project) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
+        HttpRequest request = createPutRequest(new JSONObject(project));
+        HttpResponse<String> response = send(request);
+
+        if (response.statusCode() != 200) {
+            parseAndThrowHttpRequestFailedException(response);
+            return;
+        }
     }
 
     private HttpRequest createGetRequest(String endpoint) {
@@ -45,33 +73,12 @@ public class ProjectConnection {
                 .build();
     }
 
-    private HttpResponse<String> send(HttpRequest request) throws IOException, InterruptedException {
-        return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-    }
-
-    public void create(String owner, List<String> usernames, String name) throws JSONException, IOException, InterruptedException, HttpRequestFailedException {
-        SimplifiedProjectDto project = new SimplifiedProjectDto(name, owner, usernames);
-        HttpRequest request = createPostRequest(parser.parse(project), "");
-        HttpResponse<String> response = send(request);
-
-        if (response.statusCode() != 201) {
-            JSONObject responseBodyJson = new JSONObject(response.body());
-            String message = responseBodyJson.getString("message");
-            throw new HttpRequestFailedException(message);
-        }
-    }
-
     private HttpRequest createPostRequest(JSONObject body, String endpoint) {
         return newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
                 .uri(URI.create(BASE_URL + endpoint))
                 .header("Content-Type", "application/json")
                 .build();
-    }
-
-    public void delete(long id) throws IOException, InterruptedException {
-        HttpRequest request = createDeleteRequest(id);
-        send(request);
     }
 
     private HttpRequest createDeleteRequest(long id) {
@@ -82,22 +89,21 @@ public class ProjectConnection {
                 .build();
     }
 
-    public void update(SimplifiedProjectDto project) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
-        HttpRequest request = createPutRequest(new JSONObject(project));
-        HttpResponse<String> response = send(request);
-
-        if (response.statusCode() != 200) {
-            JSONObject responseBodyJson = new JSONObject(response.body());
-            String message = responseBodyJson.getString("message");
-            throw new HttpRequestFailedException(message);
-        }
-    }
-
     private HttpRequest createPutRequest(JSONObject body) {
         return newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(body.toString()))
                 .uri(URI.create(BASE_URL))
                 .header("Content-Type", "application/json")
                 .build();
+    }
+
+    private HttpResponse<String> send(HttpRequest request) throws IOException, InterruptedException {
+        return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    }
+
+    private void parseAndThrowHttpRequestFailedException(HttpResponse<String> response) throws JSONException, HttpRequestFailedException {
+        JSONObject responseBodyJson = new JSONObject(response.body());
+        String message = responseBodyJson.getString("message");
+        throw new HttpRequestFailedException(message);
     }
 }
