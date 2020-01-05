@@ -20,107 +20,104 @@ import static java.net.http.HttpRequest.newBuilder;
 
 public class TaskConnection {
     private final String BASE_URL = "http://localhost:8082/api/task/";
-    private final HttpClient httpClient = HttpClient.newBuilder()
-            .version(HttpClient.Version.HTTP_2)
-            .build();
+    private final HttpClient httpClient;
 
     private JSONParser parser;
 
     public TaskConnection(JSONParser parser) {
         this.parser = parser;
+        httpClient = HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_2)
+                .build();
     }
 
-    private HttpRequest createGetRequest(String endpoint) {
-        return newBuilder()
+    public List<Task> sendGet(long projectId) throws IOException, InterruptedException, JSONException, HttpRequestFailedException {
+        HttpRequest request = createGetRequest(projectId);
+        HttpResponse<String> response = send(request);
+
+        if (response.statusCode() != 200) {
+            parseAndThrowHttpRequestFailedException(response);
+        }
+
+        return parser.getTasks(new JSONArray(response.body()));
+    }
+
+    public void sendPostForProject(CreateTaskDto task) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
+        HttpRequest request = createPostRequest(new JSONObject(task), "project");
+        HttpResponse<String> response = send(request);
+
+        if (response.statusCode() != 201) {
+            parseAndThrowHttpRequestFailedException(response);
+        }
+    }
+
+    public void sendPostForTask(CreateTaskDto dto) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
+        HttpRequest request = createPostRequest(new JSONObject(dto), "");
+        HttpResponse<String> response = send(request);
+
+        if (response.statusCode() != 201) {
+            parseAndThrowHttpRequestFailedException(response);
+        }
+    }
+
+    public void sendDelete(long id) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
+        HttpRequest request = createDeleteRequest("" + id);
+        HttpResponse<String> response = send(request);
+
+        if (response.statusCode() != 200) {
+            parseAndThrowHttpRequestFailedException(response);
+        }
+    }
+
+    public void sendUpdate(UpdateTaskDto dto) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
+        HttpRequest request = createPutRequest(new JSONObject(dto));
+        HttpResponse<String> response = send(request);
+
+        if (response.statusCode() != 200) {
+            parseAndThrowHttpRequestFailedException(response);
+        }
+    }
+
+    private HttpRequest createGetRequest(long projectId) {
+        return getJSONBuilder()
                 .GET()
-                .uri(URI.create(BASE_URL + endpoint))
-                .header("Content-Type", "application/json")
+                .uri(URI.create(BASE_URL + projectId))
                 .build();
+    }
+
+    private HttpRequest createPostRequest(JSONObject body, String endpoint) {
+        return getJSONBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
+                .uri(URI.create(BASE_URL + endpoint))
+                .build();
+    }
+
+    private HttpRequest createDeleteRequest(String endpoint) {
+        return getJSONBuilder()
+                .DELETE()
+                .uri(URI.create(BASE_URL + endpoint))
+                .build();
+    }
+
+    private HttpRequest createPutRequest(JSONObject body) {
+        return getJSONBuilder()
+                .PUT(HttpRequest.BodyPublishers.ofString(body.toString()))
+                .uri(URI.create(BASE_URL))
+                .build();
+    }
+
+    private HttpRequest.Builder getJSONBuilder() {
+        return newBuilder()
+                .header("Content-Type", "application/json");
     }
 
     private HttpResponse<String> send(HttpRequest request) throws IOException, InterruptedException {
         return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    public List<Task> getTasks(long projectId) throws IOException, InterruptedException, JSONException, HttpRequestFailedException {
-        HttpRequest request = createGetRequest("" + projectId);
-        HttpResponse<String> response = send(request);
-
-        if (response.statusCode() != 200) {
-            JSONObject responseBodyJson = new JSONObject(response.body());
-            String message = responseBodyJson.getString("message");
-            throw new HttpRequestFailedException(message);
-        }
-
-        return parser.getTasks(new JSONArray(response.body()));
-    }
-
-    public void createForProject(CreateTaskDto task) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
-        HttpRequest request = createPostRequest(new JSONObject(task), "project");
-        HttpResponse<String> response = send(request);
-
-        if (response.statusCode() != 201) {
-            JSONObject responseBodyJson = new JSONObject(response.body());
-            String message = responseBodyJson.getString("message");
-            throw new HttpRequestFailedException(message);
-        }
-    }
-
-    private HttpRequest createPostRequest(JSONObject body, String endpoint) {
-        return newBuilder()
-                .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
-                .uri(URI.create(BASE_URL + endpoint))
-                .header("Content-Type", "application/json")
-                .build();
-    }
-
-    public void createForTask(CreateTaskDto dto) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
-        HttpRequest request = createPostRequest(new JSONObject(dto), "");
-        HttpResponse<String> response = send(request);
-
-        if (response.statusCode() != 201) {
-            JSONObject responseBodyJson = new JSONObject(response.body());
-            String message = responseBodyJson.getString("message");
-            throw new HttpRequestFailedException(message);
-        }
-    }
-
-    public void delete(long id) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
-        HttpRequest request = createDeleteRequest("" + id);
-        HttpResponse<String> response = send(request);
-
-        if (response.statusCode() != 200) {
-            JSONObject responseBodyJson = new JSONObject(response.body());
-            String message = responseBodyJson.getString("message");
-            throw new HttpRequestFailedException(message);
-        }
-    }
-
-    private HttpRequest createDeleteRequest(String endpoint) {
-        return newBuilder()
-                .DELETE()
-                .uri(URI.create(BASE_URL + endpoint))
-                .header("Content-Type", "application/json")
-                .build();
-    }
-
-    public void update(UpdateTaskDto dto) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
-        HttpRequest request = createPutRequest(new JSONObject(dto));
-        HttpResponse<String> response = send(request);
-
-        if (response.statusCode() != 200) {
-            JSONObject responseBodyJson = new JSONObject(response.body());
-            String message = responseBodyJson.getString("message");
-            throw new HttpRequestFailedException(message);
-        }
-
-    }
-
-    private HttpRequest createPutRequest(JSONObject body) {
-        return newBuilder()
-                .PUT(HttpRequest.BodyPublishers.ofString(body.toString()))
-                .uri(URI.create(BASE_URL))
-                .header("Content-Type", "application/json")
-                .build();
+    private void parseAndThrowHttpRequestFailedException(HttpResponse<String> response) throws JSONException, HttpRequestFailedException {
+        JSONObject responseBodyJson = new JSONObject(response.body());
+        String message = responseBodyJson.getString("message");
+        throw new HttpRequestFailedException(message);
     }
 }

@@ -31,7 +31,7 @@ public class UpdateTaskFormController implements Initializable {
 
     private Task task;
 
-    private Runnable fillData;
+    private Runnable refreshTestContainerData;
     private Stage window;
 
     @Override
@@ -39,17 +39,21 @@ public class UpdateTaskFormController implements Initializable {
 
     }
 
-    public void set(Runnable fillData, Stage window, Task selected) {
-        this.fillData = fillData;
+    public void set(Runnable refreshData, Stage window, Task task) {
+        this.refreshTestContainerData = refreshData;
         this.window = window;
-        this.task = selected;
+        this.task = task;
 
+        setInputFields(task);
+    }
+
+    private void setInputFields(Task task) {
         title.setText(task.getTitle());
         isCompleted.setSelected(task.isCompleted());
     }
 
-    public void closeForm() {
-        fillData.run();
+    public void refreshAndClose() {
+        refreshTestContainerData.run();
         window.close();
     }
 
@@ -60,13 +64,13 @@ public class UpdateTaskFormController implements Initializable {
 
         CreateTaskFormController controller = taskFormLoader.getController();
         Stage window = mainApplication.createWindow(form, "Create task form");
-        controller.setTask(fillData, window, task.getId());
+        controller.setTask(refreshTestContainerData, window, task.getId());
     }
 
     public void deleteTask() throws InterruptedException, IOException, JSONException {
         try {
             session.deleteTask(task.getId());
-            closeForm();
+            refreshAndClose();
         } catch (HttpRequestFailedException e) {
             triggerAlert(e.getMessage());
         }
@@ -75,7 +79,7 @@ public class UpdateTaskFormController implements Initializable {
     public void updateTask() throws Throwable {
         try {
             session.updateTask(getUpdateTaskDto());
-            closeForm();
+            refreshAndClose();
         } catch (HttpRequestFailedException e) {
             triggerAlert(e.getMessage());
         }

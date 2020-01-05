@@ -42,7 +42,7 @@
         </HBox>
         <HBox alignment="CENTER" spacing="30.0">
             <children>
-                <Button mnemonicParsing="false" onAction="#closeForm" text="Cancel"/>
+                <Button mnemonicParsing="false" onAction="#refreshAndClose" text="Cancel"/>
                 <Button mnemonicParsing="false" onAction="#deleteTask" text="Delete"/>
                 <Button mnemonicParsing="false" onAction="#openCreateTaskForm" text="Create task"/>
                 <Button mnemonicParsing="false" onAction="#updateTask" text="Update"/>

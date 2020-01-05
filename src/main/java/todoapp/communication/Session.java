@@ -78,7 +78,7 @@ public class Session {
     }
 
     public List<Task> getTasks(long projectId) throws IOException, InterruptedException, JSONException, HttpRequestFailedException {
-        return taskConnection.getTasks(projectId);
+        return taskConnection.sendGet(projectId);
     }
 
     public void createTaskForProject(long projectId, String title) throws Throwable {
@@ -86,7 +86,7 @@ public class Session {
         dto.setCreatedBy(getCurrentUser().getUsername());
         dto.setProjectId(projectId);
         dto.setTitle(title);
-        taskConnection.createForProject(dto);
+        taskConnection.sendPostForProject(dto);
     }
 
     public void createTask(long taskId, String title) throws Throwable {
@@ -94,15 +94,15 @@ public class Session {
         dto.setCreatedBy(getCurrentUser().getUsername());
         dto.setTaskId(taskId);
         dto.setTitle(title);
-        taskConnection.createForTask(dto);
+        taskConnection.sendPostForTask(dto);
     }
 
     public void deleteTask(long id) throws InterruptedException, JSONException, HttpRequestFailedException, IOException {
-        taskConnection.delete(id);
+        taskConnection.sendDelete(id);
     }
 
     public void updateTask(UpdateTaskDto dto) throws Throwable {
         dto.setUpdatorUsername(getCurrentUser().getUsername());
-        taskConnection.update(dto);
+        taskConnection.sendUpdate(dto);
     }
 }
