@@ -73,7 +73,7 @@ public class LoginScreenController implements Initializable {
 
     }
 
-    public void onKeyPressed(KeyEvent keyEvent) throws Throwable {
+    public void loginOnEnterPressed(KeyEvent keyEvent) throws Throwable {
         if (keyEvent.getCode() == KeyCode.ENTER) {
             login();
         }

@@ -40,7 +40,7 @@
                     <Insets/>
                 </GridPane.margin>
             </TextField>
-            <PasswordField fx:id="passwordField" maxWidth="250.0" onKeyPressed="#onKeyPressed"
+            <PasswordField fx:id="passwordField" maxWidth="250.0" onKeyPressed="#loginOnEnterPressed"
                            style="-fx-background-color: #377;" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
             <Text fill="#aaaaaa" fontSmoothingType="LCD" strokeType="OUTSIDE" strokeWidth="0.0" text="Username"
                   GridPane.rowIndex="1">
