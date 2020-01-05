@@ -68,4 +68,8 @@ public class Session {
     public void updateProject(SimplifiedProjectDto project) throws IOException, InterruptedException, HttpRequestFailedException, JSONException {
         projectConnection.update(project);
     }
+
+    public void logout() {
+        currentUser = null;
+    }
 }
